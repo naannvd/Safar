@@ -41,6 +41,8 @@ dependencies:
   salomon_bottom_bar: ^3.3.2
   flutter_floating_bottom_bar: ^1.2.1+1
   font_awesome_flutter: ^10.7.0
+  cloud_firestore: ^5.4.2
+  icons_plus: ^5.0.0
 
 dev_dependencies:
   flutter_test:

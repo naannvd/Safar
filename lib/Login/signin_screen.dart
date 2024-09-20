@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart'; // Firebase Authentication
 import 'package:flutter/material.dart';
-import 'package:safar/widgets/custom_scaffold.dart';
+import 'package:safar/Widgets/custom_scaffold.dart';
+import 'login_success_screen.dart'; // Import success screen
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -10,7 +12,50 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final _formSignInKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   bool rememberPassword = true;
+
+  // Method to sign in the user
+  Future<void> _signInUser() async {
+    if (_formSignInKey.currentState!.validate()) {
+      try {
+        // Use FirebaseAuth to sign in with email and password
+        // UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+
+        // Navigate to the success screen upon successful login
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LoginSuccessScreen(),
+          ),
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('No user found for that email.')),
+          );
+        } else if (e.code == 'wrong-password') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Wrong password provided.')),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${e.message}')),
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -26,7 +71,7 @@ class _SignInScreenState extends State<SignInScreen> {
             flex: 7,
             child: Container(
               padding: const EdgeInsets.fromLTRB(25, 50, 25, 20),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(40.0),
@@ -38,10 +83,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    Text(
+                    const SizedBox(height: 10.0),
+                    const Text(
                       'Welcome!\n',
                       style: TextStyle(
                         color: Color(0xFF042F40),
@@ -50,10 +93,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         fontFamily: 'Montserrat',
                       ),
                     ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
+                    const SizedBox(height: 10.0),
                     TextFormField(
+                      controller: _emailController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter the email';
@@ -61,30 +103,27 @@ class _SignInScreenState extends State<SignInScreen> {
                         return null;
                       },
                       decoration: InputDecoration(
-                          label: const Text(
-                            'Email',
-                            style: TextStyle(fontFamily: 'Montserrat'),
-                          ),
-                          hintText: 'Enter Email',
-                          hintStyle: const TextStyle(
-                            color: Colors.black26,
-                            fontFamily: 'Montserrat',
-                          ),
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                            color: Colors.black12,
-                          ))),
+                        label: const Text(
+                          'Email',
+                          style: TextStyle(fontFamily: 'Montserrat'),
+                        ),
+                        hintText: 'Enter Email',
+                        hintStyle: const TextStyle(
+                          color: Colors.black26,
+                          fontFamily: 'Montserrat',
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.black12),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black12),
+                        ),
+                      ),
                     ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
+                    const SizedBox(height: 20.0),
                     TextFormField(
+                      controller: _passwordController,
                       obscureText: true,
                       obscuringCharacter: "*",
                       validator: (value) {
@@ -94,29 +133,25 @@ class _SignInScreenState extends State<SignInScreen> {
                         return null;
                       },
                       decoration: InputDecoration(
-                          label: const Text(
-                            'Password',
-                            style: TextStyle(fontFamily: 'Montserrat'),
-                          ),
-                          hintText: 'Enter Password',
-                          hintStyle: const TextStyle(
-                            color: Colors.black26,
-                            fontFamily: 'Montserrat',
-                          ),
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                            color: Colors.black12,
-                          ))),
+                        label: const Text(
+                          'Password',
+                          style: TextStyle(fontFamily: 'Montserrat'),
+                        ),
+                        hintText: 'Enter Password',
+                        hintStyle: const TextStyle(
+                          color: Colors.black26,
+                          fontFamily: 'Montserrat',
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.black12),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black12),
+                        ),
+                      ),
                     ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
+                    const SizedBox(height: 20.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -152,38 +187,19 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 25.0,
-                    ),
+                    const SizedBox(height: 25.0),
                     Visibility(
-                      visible: MediaQuery.of(context).viewInsets.bottom ==
-                          0, // Checks if keyboard is not open
+                      visible: MediaQuery.of(context).viewInsets.bottom == 0,
                       child: SizedBox(
                         width: double.infinity,
                         height: 50,
                         child: ElevatedButton(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                              Color(0xFFA1CA73),
+                            backgroundColor: WidgetStateProperty.all<Color>(
+                              const Color(0xFFA1CA73),
                             ),
                           ),
-                          onPressed: () {
-                            if (_formSignInKey.currentState!.validate() &&
-                                rememberPassword) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Processing Data'),
-                                ),
-                              );
-                            } else if (!rememberPassword) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                      'Please Agree to the Processing of Personal Data'),
-                                ),
-                              );
-                            }
-                          },
+                          onPressed: _signInUser, // Call the sign-in method
                           child: const Text(
                             'Sign in',
                             style: TextStyle(
