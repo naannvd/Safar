@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1048390334337",
+    "project_id": "safar-6b838",
+    "storage_bucket": "safar-6b838.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048390334337:android:dc9c71a2d062fd87289a80",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0ReghRA9fxc9u8SGRQ1Mt__y4JsaBkbw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048390334337:android:897dd7ed0da077f9289a80",
+        "android_client_info": {
+          "package_name": "com.example.safar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0ReghRA9fxc9u8SGRQ1Mt__y4JsaBkbw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
