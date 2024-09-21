@@ -54,6 +54,7 @@ class DefaultFirebaseOptions {
     appId: '1:1048390334337:android:897dd7ed0da077f9289a80',
     messagingSenderId: '1048390334337',
     projectId: 'safar-6b838',
+    databaseURL: 'https://safar-6b838-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'safar-6b838.appspot.com',
   );
 
@@ -62,6 +63,7 @@ class DefaultFirebaseOptions {
     appId: '1:1048390334337:ios:95276f8ff6894e00289a80',
     messagingSenderId: '1048390334337',
     projectId: 'safar-6b838',
+    databaseURL: 'https://safar-6b838-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'safar-6b838.appspot.com',
     iosBundleId: 'com.example.safar',
   );

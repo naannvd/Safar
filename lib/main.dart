@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-// import 'package:safar/firebase_options.dart';
-// import 'package:firebase_core/firebase_core.dart';
+import 'package:safar/Screens/welcome_screen.dart';
+// import 'package:flutter/widgets.dart';
+import 'package:safar/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'package:safar/Dashboard/landing_page.dart';
 // import 'package:safar/Widgets/starting_page.dart';
@@ -9,9 +12,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 final font = GoogleFonts.montserrat();
 void main() async {
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -41,6 +45,13 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.bold,
               color: Color(0xFF042F42),
               letterSpacing: 3.9),
+          displayLarge: GoogleFonts.montserrat(
+            textStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+              color: Color(0xFF042F42),
+            ),
+          ),
           bodyMedium: GoogleFonts.montserrat(
             textStyle: const TextStyle(
               fontSize: 17,
@@ -48,9 +59,27 @@ class MyApp extends StatelessWidget {
               color: Color(0xFF042F42),
             ),
           ),
+          displayMedium: GoogleFonts.montserrat(
+            textStyle: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF042F42),
+            ),
+          ),
         ),
       ),
-      home: const LandingPage(),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          }
+          if (snapshot.hasData) {
+            return const LandingPage();
+          }
+          return const WelcomeScreen();
+        },
+      ),
     );
   }
 }
