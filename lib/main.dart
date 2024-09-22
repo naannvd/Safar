@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:safar/Screens/ticket.dart';
 import 'package:safar/Screens/welcome_screen.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:safar/firebase_options.dart';
@@ -75,7 +76,7 @@ class MyApp extends StatelessWidget {
             return const CircularProgressIndicator();
           }
           if (snapshot.hasData) {
-            return const LandingPage();
+            return const TicketCard();
           }
           return const WelcomeScreen();
         },
