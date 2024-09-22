@@ -1,8 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart'; // Firebase Authentication
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:safar/Dashboard/landing_page.dart';
 import 'package:safar/Widgets/custom_scaffold.dart';
-import 'login_success_screen.dart'; // Import success screen
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});

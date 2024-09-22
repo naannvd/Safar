@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:safar/Screens/welcome_screen.dart';
-// import 'package:flutter/widgets.dart';
 import 'package:safar/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:safar/Dashboard/landing_page.dart';
+// import 'package:safar/Profile/profile.dart';
+import 'package:safar/Screens/welcome_screen.dart';
+// import 'package:safar/Tickets/ticket_book.dart';
 // import 'package:safar/Widgets/starting_page.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 final font = GoogleFonts.montserrat();
 void main() async {
@@ -68,6 +68,11 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+      // routes: {
+      //   '/home': (context) => const LandingPage(),
+      //   '/ticket': (context) => const TicketBook(),
+      //   '/profile': (context) => const ProfileScreen(),
+      // },
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
