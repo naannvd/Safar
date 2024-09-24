@@ -22,13 +22,13 @@ class LandingPage extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser;
     print('User ID : ${user!.uid}');
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-              onPressed: FirebaseAuth.instance.signOut,
-              icon: const Icon(Icons.exit_to_app))
-        ],
-      ),
+      // appBar: AppBar(
+      //   actions: [
+      //     IconButton(
+      //         onPressed: FirebaseAuth.instance.signOut,
+      //         icon: const Icon(Icons.exit_to_app))
+      //   ],
+      // ),
       backgroundColor: Colors.white,
       body: FutureBuilder(
         future: getUserName(),
