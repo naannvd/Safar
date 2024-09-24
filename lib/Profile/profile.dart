@@ -1,22 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:safar/Widgets/bottom_nav_bar.dart'; // Import your RoundedNavBar file
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-        actions: [
-          IconButton(
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-              },
-              icon: const Icon(Icons.exit_to_app)),
-        ],
-      ),
+      appBar: AppBar(title: const Text('Profile')),
+      body: Center(child: const Text('Profile Screen')),
+      bottomNavigationBar:
+          RoundedNavBar(currentTab: 'Profile'), // Pass 'Profile' as currentTab
     );
   }
 }
