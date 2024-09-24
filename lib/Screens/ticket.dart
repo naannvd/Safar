@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TicketCard extends StatelessWidget {
-  const TicketCard({Key? key}) : super(key: key);
+  const TicketCard({super.key});
 
   // Helper widget for dashed lines
   Widget buildDashedLine(
@@ -79,10 +79,10 @@ class TicketCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // Left Text
-                      Expanded(
+                      const Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             Text(
                               'Faizabad',
                               style: TextStyle(
@@ -139,10 +139,10 @@ class TicketCard extends StatelessWidget {
                         ),
                       ),
                       // Right Text
-                      Expanded(
+                      const Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
-                          children: const [
+                          children: [
                             Text(
                               'Stock EX',
                               style: TextStyle(
@@ -169,8 +169,8 @@ class TicketCard extends StatelessWidget {
               ),
             ),
             // Content Section
-            Padding(
-              padding: const EdgeInsets.all(24),
+            const Padding(
+              padding: EdgeInsets.all(24),
               child: Column(
                 children: [
                   // First Row
@@ -180,7 +180,7 @@ class TicketCard extends StatelessWidget {
                       // Passengers
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Text(
                             'Passengers',
                             style: TextStyle(
@@ -204,7 +204,7 @@ class TicketCard extends StatelessWidget {
                       // Seat No.
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
+                        children: [
                           Text(
                             'Seat No.',
                             style: TextStyle(
@@ -228,7 +228,7 @@ class TicketCard extends StatelessWidget {
                       // Ticket No.
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
-                        children: const [
+                        children: [
                           Text(
                             'Ticket No.',
                             style: TextStyle(
@@ -251,15 +251,15 @@ class TicketCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
                   // Dashed Divider
-                  const Divider(
+                  Divider(
                     color: Colors.grey,
                     thickness: 1,
                     indent: 0,
                     endIndent: 0,
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
                   // Second Row (Same as First)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -267,7 +267,7 @@ class TicketCard extends StatelessWidget {
                       // Passengers
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Text(
                             'Passengers',
                             style: TextStyle(
@@ -291,7 +291,7 @@ class TicketCard extends StatelessWidget {
                       // Seat No.
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
+                        children: [
                           Text(
                             'Seat No.',
                             style: TextStyle(
@@ -315,7 +315,7 @@ class TicketCard extends StatelessWidget {
                       // Ticket No.
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
-                        children: const [
+                        children: [
                           Text(
                             'Ticket No.',
                             style: TextStyle(
@@ -379,8 +379,8 @@ class TicketCard extends StatelessWidget {
                     ),
                   ),
                   // Content
-                  Column(
-                    children: const [
+                  const Column(
+                    children: [
                       SizedBox(height: 8),
                       Text(
                         'Show this to the counter at the bus station',

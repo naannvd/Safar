@@ -1,13 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:safar/Dashboard/landing_page.dart';
 import 'package:safar/Screens/ticket.dart';
 import 'package:safar/Screens/welcome_screen.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:safar/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'package:safar/Dashboard/landing_page.dart';
 // import 'package:safar/Widgets/starting_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -76,7 +75,7 @@ class MyApp extends StatelessWidget {
             return const CircularProgressIndicator();
           }
           if (snapshot.hasData) {
-            return const TicketCard();
+            return const WelcomeScreen();
           }
           return const WelcomeScreen();
         },

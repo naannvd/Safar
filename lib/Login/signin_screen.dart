@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart'; // Firebase Authentication
 import 'package:flutter/material.dart';
 import 'package:safar/Dashboard/landing_page.dart';
+import 'package:safar/Login/forgot_password.dart';
 import 'package:safar/Widgets/custom_scaffold.dart';
-import 'login_success_screen.dart'; // Import success screen
+// Import success screen
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -177,6 +178,14 @@ class _SignInScreenState extends State<SignInScreen> {
                           ],
                         ),
                         GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ForgotPasswordScreen()),
+                            );
+                          },
                           child: Text(
                             'Forgot password?',
                             style: TextStyle(

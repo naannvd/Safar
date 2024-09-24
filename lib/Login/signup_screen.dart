@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
 import 'package:flutter/material.dart';
-// import 'package:icons_plus/icons_plus.dart';
 import 'package:safar/login/signin_screen.dart';
 import 'package:safar/Widgets/custom_scaffold.dart';
 
@@ -17,9 +16,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool agreePersonalData = true;
 
-  // Method to sign up the user and store details in Firestore
+  bool agreePersonalData = true;
+  bool _isEmailSent = false; // Flag to track if the verification email is sent
+
+  // Method to sign up the user and send verification email
   Future<void> _signUpUser() async {
     if (_formSignupKey.currentState!.validate() && agreePersonalData) {
       try {
@@ -30,26 +31,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
           password: _passwordController.text.trim(),
         );
 
-        // After successful sign-up, store the user's details in Firestore
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(userCredential
-                .user!.uid) // Use the user's UID as the document ID
-            .set({
-          'fullName': _fullNameController.text.trim(),
-          'email': _emailController.text.trim(),
-          'createdAt': Timestamp.now(),
+        // Send a verification email
+        await userCredential.user!.sendEmailVerification();
+
+        // Set state to track email sent
+        setState(() {
+          _isEmailSent = true;
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('User signed up successfully')),
-        );
-
-        // Optionally, navigate to another screen after successful sign-up
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const SignInScreen(),
+          const SnackBar(
+            content: Text(
+                'A verification email has been sent. Please check your inbox.'),
           ),
         );
       } on FirebaseAuthException catch (e) {
@@ -80,6 +73,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
+  // Method to check if the email is verified
+  Future<void> _checkEmailVerification() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    // Reload the user to get the latest info from Firebase
+    await user!.reload();
+    user = FirebaseAuth.instance.currentUser;
+
+    if (user!.emailVerified) {
+      // If email is verified, save user details to Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid) // Use the user's UID as the document ID
+          .set({
+        'fullName': _fullNameController.text.trim(),
+        'email': _emailController.text.trim(),
+        'createdAt': Timestamp.now(),
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Email verified successfully!')),
+      );
+
+      // Navigate to the sign-in screen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const SignInScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text(
+                'Email is not verified yet. Please check your email for the verification link.')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -103,13 +133,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               child: SingleChildScrollView(
-                // get started form
                 child: Form(
                   key: _formSignupKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // get started text
+                      // Get Started Text
                       const Text(
                         'Get Started',
                         style: TextStyle(
@@ -120,7 +149,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       const SizedBox(height: 40.0),
-                      // full name
+                      // Full Name Field
                       TextFormField(
                         controller: _fullNameController,
                         validator: (value) {
@@ -142,7 +171,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       const SizedBox(height: 40),
-                      // email
+                      // Email Field
                       TextFormField(
                         controller: _emailController,
                         validator: (value) {
@@ -164,7 +193,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       const SizedBox(height: 25.0),
-                      // password
+                      // Password Field
                       TextFormField(
                         controller: _passwordController,
                         obscureText: true,
@@ -188,7 +217,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       const SizedBox(height: 25.0),
-                      // agree to the processing of personal data
+                      // Checkbox for personal data agreement
                       Row(
                         children: [
                           Checkbox(
@@ -217,19 +246,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ],
                       ),
                       const SizedBox(height: 25.0),
-                      // sign up button
+                      // Sign up or Check Email Verification Button
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
                           style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all<Color>(
+                            backgroundColor: MaterialStateProperty.all<Color>(
                               const Color(0xFFA1CA73),
                             ),
                           ),
-                          onPressed: _signUpUser, // Call sign-up method
-                          child: const Text(
-                            'Sign up',
-                            style: TextStyle(
+                          onPressed: _isEmailSent
+                              ? _checkEmailVerification
+                              : _signUpUser,
+                          child: Text(
+                            _isEmailSent
+                                ? 'Check Email Verification'
+                                : 'Sign up',
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 22,
                               fontFamily: 'Montserrat',
@@ -239,9 +272,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       const SizedBox(height: 30.0),
-                      // Sign up with social media buttons...
-                      const SizedBox(height: 25.0),
-                      // already have an account
+                      // Already have an account?
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
