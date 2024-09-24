@@ -1,21 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:safar/Dashboard/landing_page.dart';
+import 'package:safar/Profile/profile.dart';
+import 'package:safar/Screens/ticket.dart';
 
 class RoundedNavBar extends StatefulWidget {
-  const RoundedNavBar({super.key});
+  final String currentTab;
+
+  const RoundedNavBar({super.key, required this.currentTab});
 
   @override
   State<RoundedNavBar> createState() => _RoundedNavBarState();
 }
 
 class _RoundedNavBarState extends State<RoundedNavBar> {
-  String activeTab = 'Home';
+  late String activeTab;
 
   final List<Map<String, dynamic>> navItems = [
-    {'name': 'Home', 'icon': FontAwesomeIcons.house},
-    {'name': 'Ticket', 'icon': FontAwesomeIcons.ticket},
-    {'name': 'Profile', 'icon': FontAwesomeIcons.user},
+    {
+      'name': 'Home',
+      'icon': FontAwesomeIcons.house,
+      'screen': LandingPage(), // Link to HomeScreen widget
+    },
+    {
+      'name': 'Ticket',
+      'icon': FontAwesomeIcons.ticket,
+      'screen': TicketCard(), // Link to TicketScreen widget
+    },
+    {
+      'name': 'Profile',
+      'icon': FontAwesomeIcons.user,
+      'screen': ProfileScreen(), // Link to ProfileScreen widget
+    },
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    activeTab =
+        widget.currentTab; // Set the active tab based on the current screen
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +57,18 @@ class _RoundedNavBarState extends State<RoundedNavBar> {
           bool isActive = activeTab == item['name'];
           return GestureDetector(
             onTap: () {
-              setState(() {
-                activeTab = item['name'];
-              });
+              if (activeTab != item['name']) {
+                setState(() {
+                  activeTab = item['name']; // Update the active tab
+                });
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        item['screen'], // Navigate to the corresponding screen
+                  ),
+                );
+              }
             },
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
@@ -46,9 +79,8 @@ class _RoundedNavBarState extends State<RoundedNavBar> {
               ),
               decoration: BoxDecoration(
                 color: isActive
-                    ? const Color(0xFFA1CA73)
-                    : Colors
-                        .transparent, // Green for active, transparent for inactive
+                    ? const Color(0xFFA1CA73) // Green for active
+                    : Colors.transparent, // Transparent for inactive
                 borderRadius: BorderRadius.circular(30), // Rounded pill shape
               ),
               child: Row(
@@ -56,10 +88,8 @@ class _RoundedNavBarState extends State<RoundedNavBar> {
                   FaIcon(
                     item['icon'],
                     color: isActive
-                        ? const Color(
-                            0xFF042F40) // Dark blue icon for active tab
-                        : const Color(
-                            0xFFA1CA73), // Green icon for inactive tabs
+                        ? const Color(0xFF042F40) // Dark blue for active icon
+                        : const Color(0xFFA1CA73), // Green for inactive icon
                     size: 20,
                   ),
                   if (isActive) ...[
