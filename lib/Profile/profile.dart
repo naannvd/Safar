@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:safar/Widgets/bottom_nav_bar.dart'; // Import your RoundedNavBar file
 

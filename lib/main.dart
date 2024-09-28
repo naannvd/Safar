@@ -51,6 +51,13 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.bold,
               color: Color(0xFF042F42),
               letterSpacing: 3.9),
+          titleMedium: GoogleFonts.montserrat(
+            textStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 30,
+              color: Color(0xFF042F42),
+            ),
+          ),
           displayLarge: GoogleFonts.montserrat(
             textStyle: const TextStyle(
               fontWeight: FontWeight.bold,

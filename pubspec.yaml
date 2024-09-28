@@ -46,6 +46,7 @@ dependencies:
 
   dio: ^5.7.0
   flutter_polyline_points: ^2.1.0
+  timeline_tile: ^2.0.0
   google_maps_flutter: ^2.9.0
 
 dev_dependencies:
