@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:safar/Dashboard/landing_page.dart';
 import 'package:safar/P_Routes/routes_main.dart';
 import 'package:safar/Screens/mainScreen.dart';
-import 'package:safar/Screens/ticket.dart';
+// import 'package:safar/Screens/ticket.dart';
 import 'package:safar/Screens/welcome_screen.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:safar/firebase_options.dart';
@@ -11,9 +11,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:safar/Dashboard/landing_page.dart';
-// import 'package:safar/Profile/profile.dart';
+// import 'package:safar/Tickets/ticket.dart';
 import 'package:safar/Screens/welcome_screen.dart';
-import 'package:safar/Screens/mainScreen.dart';
 // import 'package:safar/Tickets/ticket_book.dart';
 // import 'package:safar/Widgets/starting_page.dart';
 
@@ -38,6 +37,7 @@ class MyApp extends StatelessWidget {
             0xFFA1CA73,
           ),
         ),
+        // scaffoldBackgroundColor: Colors.white,
         textTheme: TextTheme(
           bodyLarge: GoogleFonts.montserrat(
             textStyle: const TextStyle(
@@ -62,6 +62,13 @@ class MyApp extends StatelessWidget {
           bodyMedium: GoogleFonts.montserrat(
             textStyle: const TextStyle(
               fontSize: 17,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF042F42),
+            ),
+          ),
+          bodySmall: GoogleFonts.montserrat(
+            textStyle: const TextStyle(
+              fontSize: 14,
               fontWeight: FontWeight.bold,
               color: Color(0xFF042F42),
             ),
@@ -87,7 +94,7 @@ class MyApp extends StatelessWidget {
             return const CircularProgressIndicator();
           }
           if (snapshot.hasData) {
-            return RoutesMain();
+            return const LandingPage();
           }
           return RoutesMain();
         },

@@ -414,7 +414,7 @@ class TicketCard extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: RoundedNavBar(currentTab: 'Ticket'),
+      bottomNavigationBar: const RoundedNavBar(currentTab: 'Ticket'),
     );
   }
 }

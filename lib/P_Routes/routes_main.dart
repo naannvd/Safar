@@ -29,7 +29,7 @@ class RoutesMain extends StatelessWidget {
           const SizedBox(height: 100), // Spacing at the top
           Text(
             'Metro Routes',
-            style: Theme.of(context).textTheme.titleMedium,
+            style: Theme.of(context).textTheme.displayLarge,
           ),
           const SizedBox(height: 80),
           // Using FutureBuilder to dynamically get routes

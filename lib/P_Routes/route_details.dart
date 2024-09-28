@@ -32,6 +32,7 @@ class RouteDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: getStations(routeName),
         builder: (context, snapshot) {
@@ -46,12 +47,12 @@ class RouteDetails extends StatelessWidget {
           } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
             final stations = snapshot.data!;
             var colorVal = routeName == 'Red-Line'
-                ? Colors.red
+                ? const Color(0xFFCC3636)
                 : routeName == 'Orange-Line'
-                    ? Colors.orange
+                    ? const Color(0xFFE06236)
                     : routeName == 'Green-Line'
-                        ? Colors.green
-                        : Colors.blue;
+                        ? const Color(0xFFA1CA73)
+                        : const Color(0xFF3E7C98);
 
             return ListView.builder(
               itemCount: stations.length,
@@ -96,56 +97,42 @@ class RouteDetails extends StatelessWidget {
                   ),
                   endChild: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      onTap: () {
-                        // Navigate to the RouteMapScreen when the card is pressed
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RouteMapScreen(
-                              startLocation: startLocation,
-                              endLocation: endLocation,
-                            ),
-                          ),
-                        );
-                      },
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  stationName,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                stationName,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              const SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Longitude: $longitude',
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                    ),
+                            ),
+                            const SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Longitude: $longitude',
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
                                   ),
-                                  Text(
-                                    'Latitude: $latitude',
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                    ),
+                                ),
+                                Text(
+                                  'Latitude: $latitude',
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
                                   ),
-                                ],
-                              ),
-                            ],
-                          ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ),

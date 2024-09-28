@@ -14,7 +14,10 @@ class LandingPage extends StatelessWidget {
         .collection('users')
         .doc(user!.uid)
         .get();
-    return userData['fullName'];
+    final fullName = userData['fullName'];
+    final firstName = fullName.split(' ')[0];
+    // return userData['fullName'];
+    return firstName;
   }
 
   @override
