@@ -14,12 +14,12 @@ class RouteCard extends StatelessWidget {
     final textColor = index % 2 == 0 ? const Color(0xFFA1CA73) : Colors.white;
 
     var colorVal = routeName == 'Red-Line'
-        ? Colors.red
+        ? const Color(0xFFCC3636)
         : routeName == 'Orange-Line'
-            ? Colors.orange
+            ? const Color(0xFFE06236)
             : routeName == 'Green-Line'
-                ? Colors.green
-                : Colors.blue;
+                ? const Color(0xFFA1CA73)
+                : const Color(0xFF3E7C98);
     return Hero(
       tag: 'routeCard$index',
       child: Card(

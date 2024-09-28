@@ -94,7 +94,7 @@ class MyApp extends StatelessWidget {
             return const CircularProgressIndicator();
           }
           if (snapshot.hasData) {
-            return const WelcomeScreen();
+            return const LandingPage();
           }
           return RoutesMain();
         },

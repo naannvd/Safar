@@ -51,12 +51,12 @@ class RouteDetails extends StatelessWidget {
           } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
             final stations = snapshot.data!;
             var colorVal = routeName == 'Red-Line'
-                ? Colors.red
+                ? const Color(0xFFCC3636)
                 : routeName == 'Orange-Line'
-                    ? Colors.orange
+                    ? const Color(0xFFE06236)
                     : routeName == 'Green-Line'
-                        ? Colors.green
-                        : Colors.blue;
+                        ? const Color(0xFFA1CA73)
+                        : const Color(0xFF3E7C98);
 
             return ListView.builder(
               itemCount: stations.length,
@@ -105,7 +105,7 @@ class RouteDetails extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Expanded(
                               child: Text(
