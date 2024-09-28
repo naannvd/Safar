@@ -1,12 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:safar/Screens/routeMap.dart';
-import 'package:timeline_tile/timeline_tile.dart';
-import 'package:safar/Screens/routeMap.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-// Make sure you import your RouteMapScreen
+import 'package:timeline_tile/timeline_tile.dart';
+import 'package:safar/Screens/routeMap.dart'; // Make sure you import your RouteMapScreen
 
 class RouteDetails extends StatelessWidget {
   const RouteDetails({super.key, required this.routeName});
