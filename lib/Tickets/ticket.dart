@@ -1,16 +1,23 @@
+// import 'dart:nativewrappers/_internal/vm/lib/core_patch.dart';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:safar/Widgets/bottom_nav_bar.dart';
 
+// import 'dart:async';
+
 class TicketCard extends StatelessWidget {
-  const TicketCard({super.key});
+  const TicketCard(
+      {super.key, required this.toStation, required this.fromStation});
+  final String toStation;
+  final String fromStation;
 
   // Helper widget for dashed lines
   Widget buildDashedLine(
       {double height = 2,
       double dashWidth = 5,
       double dashGap = 3,
-      Color color = Colors.white}) {
+      Color color = Colors.black}) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final double totalWidth = constraints.maxWidth;
@@ -33,6 +40,9 @@ class TicketCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(
+        0xFFA1CA73,
+      ),
       body: Center(
         child: Container(
           width: 350, // Approximate max-w-sm in Tailwind
@@ -46,7 +56,7 @@ class TicketCard extends StatelessWidget {
                 spreadRadius: 5,
               ),
             ],
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -55,14 +65,14 @@ class TicketCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xFF3B82F6),
-                      Color(0xFF8B5CF6)
-                    ], // from-blue-500 to-purple-600
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  ),
+                  // gradient: LinearGradient(
+                  //   colors: [
+                  //     Color(0xFF3B82F6),
+                  //     Color(0xFF8B5CF6)
+                  //   ], // from-blue-500 to-purple-600
+                  //   begin: Alignment.centerLeft,
+                  //   end: Alignment.centerRight,
+                  // ),
                   borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
                 ),
                 child: Column(
@@ -70,10 +80,10 @@ class TicketCard extends StatelessWidget {
                     const Text(
                       'SAFAR',
                       style: TextStyle(
-                        fontFamily: 'Montserrat',
+                        fontFamily: 'TitleFont',
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Color(0xFF042F42),
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -81,25 +91,25 @@ class TicketCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         // Left Text
-                        const Expanded(
+                        Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Faizabad',
-                                style: TextStyle(
+                                toStation,
+                                style: const TextStyle(
                                   fontFamily: 'Montserrat',
                                   fontSize: 14,
-                                  color: Colors.white,
+                                  color: Color(0xFF042F42),
                                 ),
                               ),
-                              SizedBox(height: 4),
-                              Text(
+                              const SizedBox(height: 4),
+                              const Text(
                                 'Dec 10 6:00pm',
                                 style: TextStyle(
                                   fontFamily: 'Montserrat',
                                   fontSize: 12,
-                                  color: Colors.white70,
+                                  color: Color(0xFF042F42),
                                 ),
                               ),
                             ],
@@ -117,14 +127,14 @@ class TicketCard extends StatelessWidget {
                                   height: 2,
                                   dashWidth: 5,
                                   dashGap: 3,
-                                  color: Colors.white,
+                                  color: const Color(0xFF042F42),
                                 ),
                               ),
                               const SizedBox(width: 4),
                               const FaIcon(
                                 FontAwesomeIcons.bus,
                                 size: 24,
-                                color: Colors.white,
+                                color: Color(0xFF042F42),
                               ),
                               const SizedBox(width: 4),
                               // Right Dashed Line
@@ -134,32 +144,26 @@ class TicketCard extends StatelessWidget {
                                   height: 2,
                                   dashWidth: 5,
                                   dashGap: 3,
-                                  color: Colors.white,
+                                  color: const Color(0xFF042F42),
                                 ),
                               ),
                             ],
                           ),
                         ),
                         // Right Text
-                        const Expanded(
+                        Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text(
-                                'Stock EX',
-                                style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 14,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(height: 4),
-                              Text(
+                              Text(fromStation,
+                                  style: Theme.of(context).textTheme.bodySmall),
+                              const SizedBox(height: 4),
+                              const Text(
                                 'Dec 10 6:20pm',
                                 style: TextStyle(
                                   fontFamily: 'Montserrat',
                                   fontSize: 12,
-                                  color: Colors.white70,
+                                  color: Color(0xFF042F42),
                                 ),
                               ),
                             ],
@@ -414,7 +418,7 @@ class TicketCard extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: RoundedNavBar(currentTab: 'Ticket'),
+      bottomNavigationBar: const RoundedNavBar(currentTab: 'Ticket'),
     );
   }
 }

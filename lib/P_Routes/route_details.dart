@@ -30,6 +30,7 @@ class RouteDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: getStations(routeName),
         builder: (context, snapshot) {
@@ -89,10 +90,11 @@ class RouteDetails extends StatelessWidget {
                   endChild: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Card(
+                      color: Colors.white,
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Expanded(
                               child: Text(

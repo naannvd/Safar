@@ -45,6 +45,8 @@ dependencies:
   icons_plus: ^5.0.0
   timeline_tile: ^2.0.0
   google_maps_flutter: ^2.9.0
+  searchfield: ^1.1.4
+  drop_down_list: ^0.0.8
 
 dev_dependencies:
   flutter_test:
