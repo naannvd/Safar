@@ -32,7 +32,9 @@ class RouteCard extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => RouteDetails(routeName: routeName),
+                  builder: (context) => RouteDetails(
+                    routeName: routeName,
+                  ),
                 ),
               );
             },
