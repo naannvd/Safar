@@ -43,6 +43,9 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   cloud_firestore: ^5.4.2
   icons_plus: ^5.0.0
+
+  dio: ^5.7.0
+  flutter_polyline_points: ^2.1.0
   google_maps_flutter: ^2.9.0
 
 dev_dependencies:
