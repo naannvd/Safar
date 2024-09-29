@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:safar/Dashboard/landing_page.dart';
 import 'package:safar/Profile/profile.dart';
-// import 'package:safar/Tickets/ticket.dart';
+import 'package:safar/Tickets/ticket.dart';
 // import 'package:safar/Tickets/ticket.dart';
 import 'package:safar/Tickets/ticket_book.dart';
 
@@ -46,7 +46,6 @@ class _RoundedNavBarState extends State<RoundedNavBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // width: 200,
       decoration: BoxDecoration(
         color: const Color(0xFF042F40), // Dark blue background
         borderRadius: BorderRadius.circular(30),
@@ -74,7 +73,6 @@ class _RoundedNavBarState extends State<RoundedNavBar> {
               }
             },
             child: AnimatedContainer(
-              // width: double.infinity,
               duration: const Duration(milliseconds: 300),
               padding: EdgeInsets.symmetric(
                 horizontal:

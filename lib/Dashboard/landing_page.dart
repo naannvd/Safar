@@ -51,7 +51,7 @@ class LandingPage extends StatelessWidget {
           );
         },
       ),
-      bottomNavigationBar: RoundedNavBar(currentTab: 'Home'),
+      bottomNavigationBar: const RoundedNavBar(currentTab: 'Home'),
 
       // return Center(
       //   child: Column(
