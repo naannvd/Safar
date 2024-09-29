@@ -97,42 +97,55 @@ class RouteDetails extends StatelessWidget {
                   ),
                   endChild: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                stationName,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RouteMapScreen(
+                              startLocation: startLocation,
+                              endLocation: endLocation,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  stationName,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Longitude: $longitude',
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey,
+                              const SizedBox(width: 10),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Longitude: $longitude',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  'Latitude: $latitude',
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey,
+                                  Text(
+                                    'Latitude: $latitude',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

@@ -7,9 +7,11 @@ class StationDropDown extends StatefulWidget {
   const StationDropDown({
     super.key,
     required this.onStationSelected,
+    required this.selectedLine,
   });
 
   final void Function(String) onStationSelected;
+  final String selectedLine;
 
   @override
   _StationDropDownState createState() => _StationDropDownState();
@@ -30,7 +32,10 @@ class _StationDropDownState extends State<StationDropDown> {
   Future<void> _fetchStationNames() async {
     try {
       final QuerySnapshot<Map<String, dynamic>> stationsSnapshot =
-          await FirebaseFirestore.instance.collection('stations').get();
+          await FirebaseFirestore.instance
+              .collection('stations')
+              .where('metro_lines', isEqualTo: widget.selectedLine)
+              .get();
 
       // Map the station names to SelectedListItem objects for the dropdown
       final List<SelectedListItem> stationNames = stationsSnapshot.docs
