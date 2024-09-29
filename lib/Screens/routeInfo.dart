@@ -3,14 +3,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapScreen extends StatefulWidget {
+  const MapScreen({super.key});
+
   @override
   _MapScreenState createState() => _MapScreenState();
 }
 
 class _MapScreenState extends State<MapScreen> {
   GoogleMapController? _mapController;
-  Set<Polyline> _polylines = {};
-  List<LatLng> _routeCoordinates = [];
+  final Set<Polyline> _polylines = {};
+  final List<LatLng> _routeCoordinates = [];
 
   @override
   void initState() {
@@ -31,15 +33,15 @@ class _MapScreenState extends State<MapScreen> {
         List<dynamic> coordinates = data['coordinates'];
 
         // Convert the coordinates into a list of LatLng
-        coordinates.forEach((coord) {
+        for (var coord in coordinates) {
           _routeCoordinates.add(LatLng(coord['lat'], coord['lng']));
-        });
+        }
 
         setState(() {
           // Create a polyline from the route coordinates
           _polylines.add(
             Polyline(
-              polylineId: PolylineId('route_1'),
+              polylineId: const PolylineId('route_1'),
               points: _routeCoordinates,
               color: Colors.blue,
               width: 5,
@@ -54,10 +56,10 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Route Map'),
+        title: const Text('Route Map'),
       ),
       body: GoogleMap(
-        initialCameraPosition: CameraPosition(
+        initialCameraPosition: const CameraPosition(
           target: LatLng(33.6844, 73.0479), // Initial position
           zoom: 12,
         ),

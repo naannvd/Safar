@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:safar/P_Routes/route_details.dart';
 
 class RouteCard extends StatelessWidget {
