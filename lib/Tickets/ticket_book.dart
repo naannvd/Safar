@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:safar/Tickets/station_drop_down.dart';
 import 'package:safar/Tickets/ticket.dart';
 import 'package:safar/Widgets/bottom_nav_bar.dart';
@@ -79,12 +80,13 @@ class _TicketBookState extends State<TicketBook> {
               ),
               child: DropdownButton<String>(
                 value: _selectedLine,
-                hint: const Text(
+                hint: Text(
                   'Select Line',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Montserrat',
-                    fontSize: 16,
+                  style: GoogleFonts.montserrat(
+                    textStyle: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
                   ),
                 ),
                 dropdownColor: _selectedLine != null
@@ -106,10 +108,13 @@ class _TicketBookState extends State<TicketBook> {
                     value: line,
                     child: Text(
                       line,
-                      style: TextStyle(
-                        color: _selectedLine == null
-                            ? Colors.black
-                            : Colors.white, // Selected item color logic
+                      style: GoogleFonts.montserrat(
+                        textStyle: TextStyle(
+                          color: _selectedLine == null
+                              ? Colors.black
+                              : Colors.white,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                   );
@@ -128,12 +133,14 @@ class _TicketBookState extends State<TicketBook> {
                 children: [
                   StationDropDown(
                     onStationSelected: _onFromStationSelect,
+                    selectedLine: _selectedLine!,
                   ),
                   const SizedBox(
                     height: 30,
                   ),
                   StationDropDown(
                     onStationSelected: _onToStationSelect,
+                    selectedLine: _selectedLine!,
                   ),
                 ],
               ),
@@ -170,13 +177,11 @@ class _TicketBookState extends State<TicketBook> {
                 },
                 child: Text(
                   'Book Ticket',
-                  style: TextStyle(
-                      color: _selectedLine != null
-                          ? Colors.white
-                          : Colors
-                              .black, // Change text color based on selected line
+                  style: GoogleFonts.montserrat(
+                      // Change text color based on selected line
                       fontSize: 20,
-                      fontFamily: 'Montserrat',
+                      color:
+                          _selectedLine != null ? Colors.white : Colors.black,
                       fontWeight: FontWeight.w400),
                 )),
           ],
