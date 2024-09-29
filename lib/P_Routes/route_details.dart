@@ -99,6 +99,7 @@ class RouteDetails extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
                       onTap: () {
+                        // Navigate to the RouteMapScreen when the card is pressed
                         Navigator.push(
                           context,
                           MaterialPageRoute(
