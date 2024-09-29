@@ -7,7 +7,7 @@ class StationDropDown extends StatefulWidget {
   const StationDropDown({
     super.key,
     required this.onStationSelected,
-    required this.selectedLine,
+    required this.selectedLine, // Pass the selected metro line
   });
 
   final void Function(String) onStationSelected;
@@ -25,17 +25,42 @@ class _StationDropDownState extends State<StationDropDown> {
   @override
   void initState() {
     super.initState();
-    _fetchStationNames();
+    _fetchStationNames(
+        widget.selectedLine); // Fetch station names based on selected line
   }
 
-  // Fetch station names from Firestore
-  Future<void> _fetchStationNames() async {
+  @override
+  void didUpdateWidget(covariant StationDropDown oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selectedLine != oldWidget.selectedLine) {
+      // If the selected line changes, refetch stations
+      setState(() {
+        _isLoading = true; // Show loading indicator while fetching new stations
+        _stationItems = []; // Clear the current station list
+      });
+      _fetchStationNames(
+          widget.selectedLine); // Fetch stations for the new line
+    }
+  }
+
+  // Fetch station names from Firestore based on the selected metro line
+  Future<void> _fetchStationNames(String selectedLine) async {
+    print('Fetching stations for line: $selectedLine'); // Debugging
+
     try {
       final QuerySnapshot<Map<String, dynamic>> stationsSnapshot =
           await FirebaseFirestore.instance
               .collection('stations')
-              .where('metro_lines', isEqualTo: widget.selectedLine)
+              .where('metro_lines',
+                  arrayContains: selectedLine) // Use arrayContains
               .get();
+
+      // Check if the query returned results
+      if (stationsSnapshot.docs.isEmpty) {
+        print('No stations found for the selected line: $selectedLine');
+      } else {
+        print('Stations found: ${stationsSnapshot.docs.length}');
+      }
 
       // Map the station names to SelectedListItem objects for the dropdown
       final List<SelectedListItem> stationNames = stationsSnapshot.docs
@@ -81,7 +106,7 @@ class _StationDropDownState extends State<StationDropDown> {
             ),
           ),
         if (!_isLoading && _stationItems.isEmpty)
-          const Text('No stations available'),
+          const Text('No stations available for this metro line'),
       ],
     );
   }
