@@ -21,7 +21,7 @@ class _RouteMapScreenState extends State<RouteMapScreen> {
   PolylinePoints polylinePoints = PolylinePoints();
 
   // API Key for Google Maps (set it in your native configuration or here)
-  String googleApiKey = 'YOUR_GOOGLE_MAPS_API_KEY';
+  String googleApiKey = 'AIzaSyD4KSX8nkp7JTb7WqOFk_HU1Cn-lXH9lrg';
 
   @override
   void initState() {
@@ -30,6 +30,7 @@ class _RouteMapScreenState extends State<RouteMapScreen> {
   }
 
   _getPolyline() async {
+    // Make sure to replace _originLatitude and _originLongitude with actual variables from your widget
     double originLatitude = widget.startLocation.latitude;
     double originLongitude = widget.startLocation.longitude;
     double destLatitude = widget.endLocation.latitude;
@@ -42,15 +43,21 @@ class _RouteMapScreenState extends State<RouteMapScreen> {
         origin: PointLatLng(originLatitude, originLongitude),
         destination: PointLatLng(destLatitude, destLongitude),
         mode: TravelMode.driving, // You can choose driving, walking, etc.
+        // wayPoints: [
+        //   // Add waypoints if needed (optional)
+        //   PolylineWayPoint(location: "Sabo, Yaba Lagos Nigeria")
+        // ],
       ),
     );
 
+    // Check if the result contains points
     if (result.points.isNotEmpty) {
       // Convert result points to LatLng and add them to the polyline
       for (var point in result.points) {
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
       }
 
+      // Update state with the new polyline
       setState(() {
         _polylines.add(Polyline(
           polylineId: const PolylineId('route'),
@@ -60,71 +67,39 @@ class _RouteMapScreenState extends State<RouteMapScreen> {
         ));
       });
     } else {
+      // Handle the case where no points are found (e.g., error in API call)
       print(result.errorMessage);
     }
   }
 
-  // Function to show the map in a dialog
-  void _showMapDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          insetPadding: const EdgeInsets.all(
-              10), // Customize padding to control the dialog size
-          child: SizedBox(
-            height: 400, // Set the height of the dialog
-            width: double.infinity,
-            child: Stack(
-              children: [
-                GoogleMap(
-                  initialCameraPosition: CameraPosition(
-                    target: widget.startLocation,
-                    zoom: 10.0,
-                  ),
-                  polylines: _polylines,
-                  markers: {
-                    Marker(
-                      markerId: const MarkerId('start'),
-                      position: widget.startLocation,
-                      infoWindow: const InfoWindow(title: 'Start Location'),
-                    ),
-                    Marker(
-                      markerId: const MarkerId('end'),
-                      position: widget.endLocation,
-                      infoWindow: const InfoWindow(title: 'End Location'),
-                    ),
-                  },
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
-                  },
-                ),
-                Positioned(
-                  top: 10,
-                  right: 10,
-                  child: IconButton(
-                    icon: const Icon(Icons.close, color: Colors.black),
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Close the dialog
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        // Call this method to show the map in a dialog
-        _showMapDialog(context);
-      },
-      child: const Text('Show Map'),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Route Map'),
+      ),
+      body: GoogleMap(
+        initialCameraPosition: CameraPosition(
+          target: widget.startLocation,
+          zoom: 10.0,
+        ),
+        polylines: _polylines,
+        markers: {
+          Marker(
+            markerId: const MarkerId('start'),
+            position: widget.startLocation,
+            infoWindow: const InfoWindow(title: 'Start Location'),
+          ),
+          Marker(
+            markerId: const MarkerId('end'),
+            position: widget.endLocation,
+            infoWindow: const InfoWindow(title: 'End Location'),
+          ),
+        },
+        onMapCreated: (GoogleMapController controller) {
+          _controller.complete(controller);
+        },
+      ),
     );
   }
 }
