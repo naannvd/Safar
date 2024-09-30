@@ -152,7 +152,7 @@ class _TicketBookState extends State<TicketBook> {
                           color: _selectedLine == null
                               ? Colors.black
                               : Colors.white,
-                          fontSize: 16,
+                          fontSize: 20,
                         ),
                       ),
                     ),
@@ -215,10 +215,11 @@ class _TicketBookState extends State<TicketBook> {
             if (_selectedLine != null)
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: _selectedLine != null
-                      ? lineColors[_selectedLine]
-                      : Colors.grey[300],
-                ),
+                    backgroundColor: _selectedLine != null
+                        ? lineColors[_selectedLine]
+                        : Colors.grey[300],
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 12)),
                 onPressed: () async {
                   if (_selectedStationFrom != null &&
                       _selectedStationTo != null &&
@@ -237,6 +238,9 @@ class _TicketBookState extends State<TicketBook> {
                     try {
                       // Fetch the userId
                       String? receivedUserId = await getUserId();
+                      String ticketId =
+                          TicketSupport().generateTicketId(_selectedLine!);
+                      print(ticketId);
 
                       if (receivedUserId == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -250,22 +254,22 @@ class _TicketBookState extends State<TicketBook> {
 
                       // Create the ticket
                       await TicketSupport().createTicket(
-                        userId: receivedUserId,
-                        fromStation: _selectedStationFrom!,
-                        toStation: _selectedStationTo!,
-                        routeName: _selectedLine!,
-                        fare: fare!,
-                        timeToNext: 10,
-                      );
+                          userId: receivedUserId,
+                          fromStation: _selectedStationFrom!,
+                          toStation: _selectedStationTo!,
+                          routeName: _selectedLine!,
+                          fare: fare!,
+                          timeToNext: 10,
+                          ticketId: ticketId);
 
                       // Navigate to TicketCard page
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => TicketCard(
-                            fromStation: _selectedStationFrom!,
-                            toStation: _selectedStationTo!,
-                          ),
+                          builder: (context) => const TicketCard(
+                              // fromStation: _selectedStationFrom!,
+                              // toStation: _selectedStationTo!,
+                              ),
                         ),
                       );
                     } catch (e) {

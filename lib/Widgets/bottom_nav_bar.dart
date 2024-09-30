@@ -31,7 +31,7 @@ class _RoundedNavBarState extends State<RoundedNavBar> {
     {
       'name': 'Profile',
       'icon': FontAwesomeIcons.user,
-      'screen': const ProfileScreen(), // Link to ProfileScreen widget
+      'screen': const ProfileScreen()
     },
   ];
 
