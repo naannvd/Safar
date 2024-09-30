@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:safar/Dashboard/landing_page.dart';
 import 'package:safar/Profile/profile.dart';
+import 'package:safar/Tickets/qr_generate.dart';
 // import 'package:safar/Tickets/ticket.dart';
 // import 'package:safar/Tickets/ticket.dart';
 import 'package:safar/Tickets/ticket_book.dart';
@@ -32,7 +33,13 @@ class _RoundedNavBarState extends State<RoundedNavBar> {
     {
       'name': 'Profile',
       'icon': FontAwesomeIcons.user,
-      'screen': ProfileScreen(), // Link to ProfileScreen widget
+      'screen': const TicketQR(
+        fromStation: 'Lahore',
+        toStation: 'Karachi',
+        ticketNumber: '69',
+        purchaseTime: '6:20 pm',
+        timeToNextStation: '2 hours',
+      ), // Link to ProfileScreen widget
     },
   ];
 

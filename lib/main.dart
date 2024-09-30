@@ -59,6 +59,13 @@ class MyApp extends StatelessWidget {
               color: Color(0xFF042F42),
             ),
           ),
+          displaySmall: GoogleFonts.montserrat(
+            textStyle: const TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF042F42),
+            ),
+          ),
           bodyMedium: GoogleFonts.montserrat(
             textStyle: const TextStyle(
               fontSize: 17,
@@ -68,7 +75,7 @@ class MyApp extends StatelessWidget {
           ),
           bodySmall: GoogleFonts.montserrat(
             textStyle: const TextStyle(
-              fontSize: 14,
+              fontSize: 12,
               fontWeight: FontWeight.bold,
               color: Color(0xFF042F42),
             ),
