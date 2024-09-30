@@ -46,7 +46,7 @@ class RoutesMain extends StatelessWidget {
                   );
                 } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                   final routes = snapshot.data!;
-                  final double cardHeight = 150;
+                  const double cardHeight = 150;
                   final double containerHeight = cardHeight * routes.length;
 
                   return SizedBox(
