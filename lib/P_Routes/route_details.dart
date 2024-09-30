@@ -64,7 +64,7 @@ class RouteDetails extends StatelessWidget {
                 final latitude = station['latitude'] as double? ?? 0.0;
 
                 // Hardcoded start location
-                final LatLng startLocation = LatLng(33.6811542, 73.2149807);
+                const LatLng startLocation = LatLng(33.6811542, 73.2149807);
 
                 // Station location as the end location
                 final LatLng endLocation = LatLng(latitude, longitude);

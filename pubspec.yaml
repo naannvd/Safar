@@ -52,6 +52,8 @@ dependencies:
   drop_down_list: ^0.0.8
   # location: ^6.0.2
   # geolocator: ^9.0.2
+  # flutter_stripe: ^11.1.0
+  # http: ^1.2.2
   
 dev_dependencies:
   flutter_test:
