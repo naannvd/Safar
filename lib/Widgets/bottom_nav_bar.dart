@@ -3,8 +3,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:safar/Dashboard/landing_page.dart';
 import 'package:safar/Profile/profile.dart';
 import 'package:safar/Tickets/ticket.dart';
-// import 'package:safar/Tickets/ticket.dart';
 import 'package:safar/Tickets/ticket_book.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RoundedNavBar extends StatefulWidget {
   final String currentTab;
@@ -17,34 +18,57 @@ class RoundedNavBar extends StatefulWidget {
 
 class _RoundedNavBarState extends State<RoundedNavBar> {
   late String activeTab;
-
-  final List<Map<String, dynamic>> navItems = [
-    {
-      'name': 'Home',
-      'icon': FontAwesomeIcons.house,
-      'screen': const LandingPage(), // Link to HomeScreen widget
-    },
-    {
-      'name': 'Ticket',
-      'icon': FontAwesomeIcons.ticket,
-      'screen': const TicketBook(), // Link to TicketScreen widget
-    },
-    {
-      'name': 'Profile',
-      'icon': FontAwesomeIcons.user,
-      'screen': const ProfileScreen()
-    },
-  ];
+  bool hasActiveTicket = false;
 
   @override
   void initState() {
     super.initState();
-    activeTab =
-        widget.currentTab; // Set the active tab based on the current screen
+    activeTab = widget.currentTab;
+    _checkActiveTicket();
+  }
+
+  Future<void> _checkActiveTicket() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection('tickets')
+            .where('userId', isEqualTo: user.uid)
+            .where('status', isEqualTo: 'active')
+            .limit(1)
+            .get();
+
+        if (querySnapshot.docs.isNotEmpty) {
+          setState(() {
+            hasActiveTicket = true;
+          });
+        }
+      }
+    } catch (e) {
+      print('Error checking active ticket: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final List<Map<String, dynamic>> navItems = [
+      {
+        'name': 'Home',
+        'icon': FontAwesomeIcons.house,
+        'screen': const LandingPage(),
+      },
+      {
+        'name': 'Ticket',
+        'icon': FontAwesomeIcons.ticket,
+        'screen': hasActiveTicket ? const TicketCard() : const TicketBook(),
+      },
+      {
+        'name': 'Profile',
+        'icon': FontAwesomeIcons.user,
+        'screen': const ProfileScreen()
+      },
+    ];
+
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFF042F40), // Dark blue background

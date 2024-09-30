@@ -149,6 +149,15 @@ class TicketCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Center(
+                child: Text(
+                  'Ticket Details',
+                  style: GoogleFonts.montserrat(
+                      color: Colors.white,
+                      fontSize: 26,
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
+              Center(
                 child: Container(
                   width: 350,
                   margin: const EdgeInsets.symmetric(vertical: 40),
