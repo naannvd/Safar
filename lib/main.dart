@@ -22,6 +22,8 @@ void main() async {
   );
   // Stripe.publishableKey =
   //     'pk_test_51Q4W8VHkCxwBwwCk8FnDxQ6yrXn2SC8us1rmMdoKMTaoICASAJQAtjJMjwEnrFYmZdLxEtj2kcAXttm6wHWByfVB00KlniL7dQ';
+
+  FirebaseAuth.instance.setLanguageCode('en');
   runApp(const MyApp());
 }
 

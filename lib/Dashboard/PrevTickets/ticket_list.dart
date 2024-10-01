@@ -24,6 +24,7 @@ class _TicketListState extends State<TicketList> {
         .collection('tickets')
         .where('userId', isEqualTo: user.uid)
         .where('status', isEqualTo: 'completed')
+        .orderBy('purchaseTime', descending: true)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {

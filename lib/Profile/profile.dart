@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:safar/Profile/SupportChat/chat.dart';
 import 'package:safar/Profile/profile_edit.dart';
+import 'package:safar/Screens/welcome_screen.dart';
 import 'package:safar/Widgets/bottom_nav_bar.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -33,10 +35,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return userData['email'];
   }
 
-  Future<void> _navigateToProfileEdit() async {
+  Future<void> _navigateToLoginScreen() async {
+    FirebaseAuth.instance.signOut();
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const ProfileEdit()),
+      MaterialPageRoute(builder: (context) => const WelcomeScreen()),
     );
 
     if (result == true) {
@@ -127,7 +130,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           _buildProfileOption(
                             Icons.support,
                             'Support',
-                            () {},
+                            () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ChatScreen()));
+                            },
                             const Color(0xFF042F40),
                           ),
                           _buildProfileOption(
@@ -137,7 +146,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             const Color(0xFF042F40),
                           ),
                           _buildProfileOption(Icons.logout, 'Logout',
-                              _navigateToProfileEdit, Colors.red),
+                              _navigateToLoginScreen, Colors.red),
                           // GestureDetector(
                           //   onTap: () => FirebaseAuth.instance.signOut(),
                           //   child: Container(
