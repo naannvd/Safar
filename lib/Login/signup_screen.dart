@@ -90,6 +90,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         'fullName': _fullNameController.text.trim(),
         'email': _emailController.text.trim(),
         'createdAt': Timestamp.now(),
+        'image_url': '',
+        'role': '',
+        'loyalty_points': 0,
       });
 
       ScaffoldMessenger.of(context).showSnackBar(

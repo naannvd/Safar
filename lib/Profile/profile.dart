@@ -35,6 +35,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return userData['email'];
   }
 
+  Future<String> fetchImage() async {
+    final user = FirebaseAuth.instance.currentUser;
+    final userData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .get();
+    return userData['image_url'];
+  }
+
   Future<void> _navigateToLoginScreen() async {
     FirebaseAuth.instance.signOut();
     final result = await Navigator.push(
@@ -65,10 +74,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   children: [
                     const SizedBox(height: 80),
-                    const CircleAvatar(
-                      radius: 60,
-                      backgroundImage: AssetImage('assets/images/profile.png'),
+                    FutureBuilder<String?>(
+                      future: fetchImage(),
+                      builder: (context, imageSnapshot) {
+                        if (imageSnapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircleAvatar(
+                            radius: 60,
+                            backgroundColor: Colors.grey,
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        if (imageSnapshot.hasError ||
+                            !imageSnapshot.hasData ||
+                            imageSnapshot.data == null ||
+                            imageSnapshot.data!.isEmpty) {
+                          // If no image or an error, show default image
+                          return const CircleAvatar(
+                            radius: 60,
+                            backgroundImage:
+                                AssetImage('assets/images/profile.png'),
+                          );
+                        } else {
+                          // Show the fetched image URL from Firebase Storage
+                          return CircleAvatar(
+                            radius: 60,
+                            backgroundImage: NetworkImage(imageSnapshot.data!),
+                          );
+                        }
+                      },
                     ),
+                    // const CircleAvatar(
+                    //   radius: 60,
+                    //   backgroundImage: AssetImage('assets/images/profile.png'),
+                    // ),
                     const SizedBox(height: 20),
                     Text(
                       '${snapshot.data}',
@@ -128,8 +167,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             const Color(0xFF042F40),
                           ),
                           _buildProfileOption(
-                            Icons.support,
-                            'Support',
+                            Icons.chat_outlined,
+                            'Chat',
                             () {
                               Navigator.push(
                                   context,
@@ -141,7 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           _buildProfileOption(
                             Icons.settings,
-                            'Setting',
+                            'Settings',
                             () {},
                             const Color(0xFF042F40),
                           ),
