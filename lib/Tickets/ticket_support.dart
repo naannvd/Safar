@@ -60,34 +60,29 @@ class TicketSupport {
   }
 
   String generateTicketId(String metroRoute) {
-    // Define the prefix based on the metro route
     String prefix = '';
     switch (metroRoute) {
       case 'Green-Line':
-        prefix = 'G'; // Green Line starts with G
+        prefix = 'G';
         break;
       case 'Red-Line':
-        prefix = 'R'; // Red Line starts with R
+        prefix = 'R';
         break;
       case 'Orange-Line':
-        prefix = 'O'; // Orange Line starts with O
+        prefix = 'O';
         break;
       case 'Blue-Line':
-        prefix = 'B'; // Blue Line starts with B
+        prefix = 'B';
         break;
       default:
         throw Exception("Invalid metro route provided.");
     }
 
-    // Characters to include in the random part of the ticket ID
     const String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-
-    // Generate the random part (5 characters)
     Random random = Random();
     String randomPart =
         List.generate(5, (index) => chars[random.nextInt(chars.length)]).join();
 
-    // Return the final ticket ID (1 character prefix + 5 characters random part)
     return prefix + randomPart;
   }
 }

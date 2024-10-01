@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:safar/Dashboard/PrevTickets/ticket_list.dart';
 import 'package:safar/Dashboard/route_box.dart';
 import 'package:safar/Widgets/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
@@ -26,30 +29,71 @@ class LandingPage extends StatelessWidget {
     print('User ID : ${user!.uid}');
     return Scaffold(
       backgroundColor: Colors.white,
-      body: FutureBuilder(
-        future: getUserName(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              // mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 100),
-                Text(
-                  "Welcome, ${snapshot.data}",
-                  style: Theme.of(context).textTheme.displayLarge,
-                ),
-                const SizedBox(height: 20),
-                const RouteBox(),
-              ],
+      body: Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            FutureBuilder(
+              future: getUserName(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text('An error occurred'),
+                  );
+                }
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: Text('No data found'),
+                  );
+                }
+                return Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    // mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 100),
+                      Text(
+                        "Welcome, ${snapshot.data}",
+                        style: Theme.of(context).textTheme.displayLarge,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const RouteBox(),
+                    ],
+                  ),
+                );
+              },
             ),
-          );
-        },
+            const SizedBox(
+              height: 40,
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 20),
+              child: Text(
+                'Recent Trips',
+                style: GoogleFonts.montserrat(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF042F42),
+                ),
+              ),
+            ),
+            Container(
+              height: 200,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+              ),
+              child: const TicketList(),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: const RoundedNavBar(currentTab: 'Home'),
 

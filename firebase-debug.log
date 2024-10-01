@@ -1,0 +1,79 @@
+[debug] [2024-09-29T23:36:48.199Z] ----------------------------------------------------------------------
+[debug] [2024-09-29T23:36:48.202Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\hpomen\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init functions
+[debug] [2024-09-29T23:36:48.203Z] CLI Version:   13.20.1
+[debug] [2024-09-29T23:36:48.203Z] Platform:      win32
+[debug] [2024-09-29T23:36:48.203Z] Node Version:  v20.12.1
+[debug] [2024-09-29T23:36:48.203Z] Time:          Mon Sep 30 2024 04:36:48 GMT+0500 (Pakistan Standard Time)
+[debug] [2024-09-29T23:36:48.203Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-09-29T23:36:48.208Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2024-09-29T23:36:48.688Z] Object "" in "firebase.json" has unknown property: {"additionalProperty":"flutter"}
+[debug] [2024-09-29T23:36:48.693Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-09-29T23:36:48.693Z] > authorizing via signed-in user (libra.areeb@gmail.com)
+[debug] [2024-09-29T23:36:48.694Z] Object "" in "firebase.json" has unknown property: {"additionalProperty":"flutter"}
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  D:\project\Safar\Safar
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+[debug] [2024-09-29T23:36:52.811Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2024-09-29T23:36:52.811Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2024-09-29T23:38:03.185Z] Using project from CLI flag: safar-6b838
+[debug] [2024-09-29T23:38:03.186Z] Checked if tokens are valid: false, expires at: 1726877556289
+[debug] [2024-09-29T23:38:03.186Z] Checked if tokens are valid: false, expires at: 1726877556289
+[debug] [2024-09-29T23:38:03.187Z] > refreshing access token with scopes: []
+[debug] [2024-09-29T23:38:03.188Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-09-29T23:38:03.188Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-09-29T23:38:03.556Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2024-09-29T23:38:03.556Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-09-29T23:38:03.563Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/safar-6b838 [none]
+[debug] [2024-09-29T23:38:04.104Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/safar-6b838 200
+[debug] [2024-09-29T23:38:04.104Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/safar-6b838 {"projectId":"safar-6b838","projectNumber":"1048390334337","displayName":"Safar","name":"projects/safar-6b838","resources":{"hostingSite":"safar-6b838","realtimeDatabaseInstance":"safar-6b838-default-rtdb"},"state":"ACTIVE","etag":"1_0a014c3f-2ba6-4949-903f-7dc876d37dcc"}
+[info] i  Using project safar-6b838 (Safar) 
+[info] 
+=== Functions Setup
+[debug] [2024-09-29T23:38:04.108Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-09-29T23:38:04.108Z] > authorizing via signed-in user (libra.areeb@gmail.com)
+[debug] [2024-09-29T23:38:04.108Z] [iam] checking project safar-6b838 for permissions ["firebase.projects.get"]
+[debug] [2024-09-29T23:38:04.109Z] Checked if tokens are valid: true, expires at: 1727656682556
+[debug] [2024-09-29T23:38:04.109Z] Checked if tokens are valid: true, expires at: 1727656682556
+[debug] [2024-09-29T23:38:04.109Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/safar-6b838:testIamPermissions [none]
+[debug] [2024-09-29T23:38:04.109Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/safar-6b838:testIamPermissions x-goog-quota-user=projects/safar-6b838
+[debug] [2024-09-29T23:38:04.109Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/safar-6b838:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-09-29T23:38:05.680Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/safar-6b838:testIamPermissions 200
+[debug] [2024-09-29T23:38:05.680Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/safar-6b838:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-09-29T23:38:05.681Z] Checked if tokens are valid: true, expires at: 1727656682556
+[debug] [2024-09-29T23:38:05.681Z] Checked if tokens are valid: true, expires at: 1727656682556
+[debug] [2024-09-29T23:38:05.681Z] Checked if tokens are valid: true, expires at: 1727656682556
+[debug] [2024-09-29T23:38:05.681Z] Checked if tokens are valid: true, expires at: 1727656682556
+[debug] [2024-09-29T23:38:05.682Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/safar-6b838/services/cloudfunctions.googleapis.com [none]
+[debug] [2024-09-29T23:38:05.682Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/safar-6b838/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/safar-6b838
+[debug] [2024-09-29T23:38:05.683Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/safar-6b838/services/runtimeconfig.googleapis.com [none]
+[debug] [2024-09-29T23:38:05.683Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/safar-6b838/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/safar-6b838
+[debug] [2024-09-29T23:38:07.428Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/safar-6b838/services/runtimeconfig.googleapis.com 200
+[debug] [2024-09-29T23:38:07.428Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/safar-6b838/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2024-09-29T23:38:07.458Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/safar-6b838/services/cloudfunctions.googleapis.com 200
+[debug] [2024-09-29T23:38:07.458Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/safar-6b838/services/cloudfunctions.googleapis.com [omitted]
+[info] 
+Detected existing codebase(s): default
+
+[info] 
+Overwriting codebase default...
+

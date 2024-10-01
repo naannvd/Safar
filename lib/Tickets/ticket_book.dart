@@ -60,9 +60,9 @@ class _TicketBookState extends State<TicketBook> {
     try {
       // Fetch fare from Firestore
       TicketSupport ticketSupport = TicketSupport();
-      int _fetchedFare = await ticketSupport.getFare(lineName);
+      int fetchedFare = await ticketSupport.getFare(lineName);
       setState(() {
-        fare = _fetchedFare;
+        fare = fetchedFare;
       });
     } catch (e) {
       // Display an error message if fare is not found

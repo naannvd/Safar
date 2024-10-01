@@ -408,7 +408,7 @@ class TicketCard extends StatelessWidget {
                           borderRadius: BorderRadius.vertical(
                               bottom: Radius.circular(12)),
                         ),
-                        child: Flexible(
+                        child: Expanded(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -424,11 +424,13 @@ class TicketCard extends StatelessWidget {
                                 textAlign: TextAlign.center,
                               ),
                               TicketQR(
-                                  fromStation: fromStation,
-                                  toStation: toStation,
-                                  ticketNumber: ticketId,
-                                  purchaseTime: purchaseTime,
-                                  timeToNextStation: timeToNextStation)
+                                // fromStation: fromStation,
+                                // toStation: toStation,
+                                // ticketNumber: ticketId,
+                                // purchaseTime: purchaseTime,
+                                // timeToNextStation: timeToNextStation
+                                ticketId: ticketId,
+                              )
                             ],
                           ),
                         ),

@@ -2,17 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:safar/Dashboard/landing_page.dart';
 import 'package:safar/P_Routes/routes_main.dart';
-import 'package:safar/Screens/mainScreen.dart';
-// import 'package:safar/Screens/ticket.dart';
+import 'package:safar/Profile/profile.dart';
 import 'package:safar/Screens/welcome_screen.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:safar/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
+// import 'package:flutter_stripe/flutter_stripe.dart';
 
-import 'package:safar/Dashboard/landing_page.dart';
-// import 'package:safar/Tickets/ticket.dart';
-import 'package:safar/Screens/welcome_screen.dart';
+// import 'package:safar/Profile/profile.dart';
 // import 'package:safar/Tickets/ticket_book.dart';
 // import 'package:safar/Widgets/starting_page.dart';
 
@@ -22,6 +20,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // Stripe.publishableKey =
+  //     'pk_test_51Q4W8VHkCxwBwwCk8FnDxQ6yrXn2SC8us1rmMdoKMTaoICASAJQAtjJMjwEnrFYmZdLxEtj2kcAXttm6wHWByfVB00KlniL7dQ';
   runApp(const MyApp());
 }
 
@@ -37,7 +37,6 @@ class MyApp extends StatelessWidget {
             0xFFA1CA73,
           ),
         ),
-        // scaffoldBackgroundColor: Colors.white,
         textTheme: TextTheme(
           bodyLarge: GoogleFonts.montserrat(
             textStyle: const TextStyle(
@@ -103,7 +102,7 @@ class MyApp extends StatelessWidget {
           if (snapshot.hasData) {
             return const LandingPage();
           }
-          return RoutesMain();
+          return const WelcomeScreen();
         },
       ),
     );
