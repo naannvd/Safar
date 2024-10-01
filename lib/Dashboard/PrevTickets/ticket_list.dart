@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'ticket_builder.dart'; // Make sure to import your TicketBuilder widget
 
 class TicketList extends StatefulWidget {
   const TicketList({super.key});
@@ -24,24 +26,14 @@ class _TicketListState extends State<TicketList> {
         .where('status', isEqualTo: 'completed')
         .snapshots()
         .map((snapshot) {
-      if (snapshot.docs.isEmpty) {
-        // Show a SnackBar if no tickets are found
-        Future.delayed(Duration.zero, () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('No Recent Trips. Book a ticket to get started!'),
-            ),
-          );
-        });
-      }
-
-      return snapshot.docs
-          .map((doc) => doc.data() as Map<String, dynamic>)
-          .toList();
-    }).handleError((e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error fetching tickets: $e')),
-      );
+      return snapshot.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        return {
+          'toStation': data['toStation'],
+          'fromStation': data['fromStation'],
+          'purchaseTime': data['purchaseTime'],
+        };
+      }).toList();
     });
   }
 
@@ -62,10 +54,30 @@ class _TicketListState extends State<TicketList> {
           return const Center(child: Text('No recent trips.'));
         }
 
-        return Expanded(
-          child: Center(
-            child: Text('s'),
-          ),
+        final List<Map<String, dynamic>> completedTickets = snapshot.data!;
+
+        return ListView.builder(
+          itemCount: completedTickets.length,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            final ticket = completedTickets[index];
+            final toStation = ticket['toStation'] ?? 'Unknown';
+            final fromStation = ticket['fromStation'] ?? 'Unknown';
+            final purchaseTime = ticket['purchaseTime'] as Timestamp;
+
+            final DateTime purchaseDate = purchaseTime.toDate();
+            final String month = DateFormat.MMMM().format(purchaseDate);
+            final String day = DateFormat.d().format(purchaseDate);
+            final isReversed = index % 2 == 1;
+
+            return TicketBuilder(
+              month: month,
+              day: day,
+              fromStation: fromStation,
+              toStation: toStation,
+              isReversed: isReversed,
+            );
+          },
         );
       },
     );

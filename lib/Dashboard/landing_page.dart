@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:safar/Dashboard/PrevTickets/ticket_builder.dart';
 import 'package:safar/Dashboard/PrevTickets/ticket_list.dart';
 import 'package:safar/Dashboard/route_box.dart';
 import 'package:safar/Widgets/bottom_nav_bar.dart';
@@ -85,12 +85,24 @@ class LandingPage extends StatelessWidget {
               ),
             ),
             Container(
-              height: 200,
-              width: double.infinity,
+              height: 220,
+              width: double
+                  .infinity, // Still takes up the full width of the parent container
               decoration: BoxDecoration(
                 color: Colors.grey[200],
               ),
-              child: const TicketList(),
+              child: const SingleChildScrollView(
+                // Horizontal scroll if needed
+                scrollDirection: Axis.horizontal,
+                child: SizedBox(
+                  width: 450, // TicketBuilder will have the specified width
+                  child: Align(
+                    alignment:
+                        Alignment.centerLeft, // Align the card to the left
+                    child: TicketList(),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
