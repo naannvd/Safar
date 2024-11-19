@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:safar/Profile/Loyalty/loyalty_dashboard.dart';
+import 'package:safar/Profile/QrScanner/scanner_with_window.dart';
 import 'package:safar/Profile/SupportChat/chat.dart';
 import 'package:safar/Profile/profile_edit.dart';
 import 'package:safar/Screens/welcome_screen.dart';
@@ -54,6 +57,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (result == true) {
       // User saved changes, refresh the profile screen
       setState(() {});
+    }
+  }
+
+  Future<void> _checkPermissions() async {
+    var status = await Permission.camera.status;
+    if (!status.isGranted) {
+      await Permission.camera.request();
     }
   }
 
@@ -135,11 +145,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: CircularProgressIndicator(),
                             );
                           }
-                          return Text('${snapshot.data}',
-                              style: GoogleFonts.montserrat(
-                                  fontSize: 15,
-                                  color: const Color(0xFF042F40),
-                                  fontWeight: FontWeight.w500));
+                          return Text(
+                            '${snapshot.data}',
+                            style: GoogleFonts.montserrat(
+                                fontSize: 15,
+                                color: const Color(0xFF042F40),
+                                fontWeight: FontWeight.w500),
+                          );
                         },
                       ),
                     ),
@@ -153,17 +165,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             'Edit Profile',
                             () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ProfileEdit()));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ProfileEdit(),
+                                ),
+                              );
                             },
                             const Color(0xFF042F40),
                           ),
                           _buildProfileOption(
-                            Icons.credit_score,
-                            'Tickets',
-                            () {},
+                            Icons.reviews_sharp,
+                            'Loyalty',
+                            () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const LoyaltyDashboard(),
+                                ),
+                              );
+                            },
                             const Color(0xFF042F40),
                           ),
                           _buildProfileOption(
@@ -179,42 +200,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             const Color(0xFF042F40),
                           ),
                           _buildProfileOption(
-                            Icons.settings,
-                            'Settings',
-                            () {},
+                            Icons.qr_code_scanner,
+                            'Scanner',
+                            () {
+                              _checkPermissions();
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const BarcodeScannerWithScanWindow()));
+                            },
                             const Color(0xFF042F40),
                           ),
                           _buildProfileOption(Icons.logout, 'Logout',
                               _navigateToLoginScreen, Colors.red),
-                          // GestureDetector(
-                          //   onTap: () => FirebaseAuth.instance.signOut(),
-                          //   child: Container(
-                          //     decoration: BoxDecoration(
-                          //       color: const Color(0xFFA1CA73),
-                          //       borderRadius: BorderRadius.circular(20),
-                          //     ),
-                          //     // padding: const EdgeInsets.symmetric(
-                          //     //     vertical: 2, horizontal: 5),
-                          //     margin: const EdgeInsets.symmetric(
-                          //         horizontal: 20, vertical: 7),
-                          //     child: ListTile(
-                          //       leading:
-                          //           const Icon(Icons.logout, color: Colors.red),
-                          //       title: Text(
-                          //         'Logout',
-                          //         style: GoogleFonts.montserrat(
-                          //             color: Colors.red,
-                          //             fontWeight: FontWeight.w500,
-                          //             fontSize: 16),
-                          //       ),
-                          //       trailing: const Icon(
-                          //         Icons.arrow_forward_ios,
-                          //         color: Colors.red,
-                          //         size: 15,
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
                         ],
                       ),
                     )

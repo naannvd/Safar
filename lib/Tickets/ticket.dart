@@ -424,13 +424,13 @@ class TicketCard extends StatelessWidget {
                                 textAlign: TextAlign.center,
                               ),
                               TicketQR(
-                                // fromStation: fromStation,
-                                // toStation: toStation,
-                                // ticketNumber: ticketId,
-                                // purchaseTime: purchaseTime,
-                                // timeToNextStation: timeToNextStation
-                                ticketId: ticketId,
-                              )
+                                  fromStation: fromStation,
+                                  toStation: toStation,
+                                  ticketNumber: ticketId,
+                                  purchaseTime: purchaseTime,
+                                  timeToNextStation: timeToNextStation
+                                  // ticketId: ticketId,
+                                  )
                             ],
                           ),
                         ),
