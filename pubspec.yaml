@@ -58,6 +58,8 @@ dependencies:
   firebase_messaging: ^15.1.3
   mobile_scanner: ^5.2.3
   permission_handler: ^11.3.1
+  custom_rating_bar: ^3.0.0
+  quickalert: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -86,6 +88,7 @@ flutter:
     - assets/images/home.png
     - assets/images/map.jpg
     - assets/images/profile.png
+    - assets/images/mamad.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

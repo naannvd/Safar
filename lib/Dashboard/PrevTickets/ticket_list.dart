@@ -28,11 +28,12 @@ class _TicketListState extends State<TicketList> {
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
-        final data = doc.data() as Map<String, dynamic>;
+        final data = doc.data();
         return {
           'toStation': data['toStation'],
           'fromStation': data['fromStation'],
           'purchaseTime': data['purchaseTime'],
+          'ticketId': data['ticketId'],
         };
       }).toList();
     });
@@ -65,6 +66,7 @@ class _TicketListState extends State<TicketList> {
             final toStation = ticket['toStation'] ?? 'Unknown';
             final fromStation = ticket['fromStation'] ?? 'Unknown';
             final purchaseTime = ticket['purchaseTime'] as Timestamp;
+            final ticketId = ticket['ticketId'] ?? 'Unknown';
 
             final DateTime purchaseDate = purchaseTime.toDate();
             final String month = DateFormat.MMMM().format(purchaseDate);
@@ -77,6 +79,7 @@ class _TicketListState extends State<TicketList> {
               fromStation: fromStation,
               toStation: toStation,
               isReversed: isReversed,
+              ticketId: ticketId,
             );
           },
         );

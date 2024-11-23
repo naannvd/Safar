@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:custom_rating_bar/custom_rating_bar.dart';
+import 'package:safar/Tickets/ticket_book.dart';
+import 'package:safar/Dashboard/Feedback/feedback_main.dart';
 
 class TicketBuilder extends StatelessWidget {
   const TicketBuilder({
@@ -9,6 +13,7 @@ class TicketBuilder extends StatelessWidget {
     required this.fromStation,
     required this.toStation,
     required this.isReversed,
+    required this.ticketId,
   });
 
   final String month;
@@ -16,6 +21,7 @@ class TicketBuilder extends StatelessWidget {
   final String fromStation;
   final String toStation;
   final bool isReversed;
+  final String ticketId;
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +44,21 @@ class TicketBuilder extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                month,
-                style: GoogleFonts.montserrat(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w500,
-                  color:
-                      foregroundColor, // Foreground changes based on `isReversed`
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    month,
+                    style: GoogleFonts.montserrat(
+                      fontSize: 18.5,
+                      fontWeight: FontWeight.w500,
+                      color:
+                          foregroundColor, // Foreground changes based on `isReversed`
+                    ),
+                  ),
+                  FeedbackIcon(
+                      foregroundColor: foregroundColor, ticketId: ticketId),
+                ],
               ),
               const SizedBox(height: 8),
               Text(
