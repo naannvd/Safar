@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:safar/Tickets/complete_button.dart';
 import 'package:safar/Tickets/qr_generate.dart';
-import 'package:safar/Tickets/ticket_book.dart';
 import 'package:safar/Widgets/bottom_nav_bar.dart';
 
 class TicketCard extends StatelessWidget {

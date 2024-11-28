@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:safar/Dashboard/PrevTickets/ticket_builder.dart';
 import 'package:safar/Dashboard/PrevTickets/ticket_list.dart';
 import 'package:safar/Dashboard/route_box.dart';
 import 'package:safar/Widgets/bottom_nav_bar.dart';

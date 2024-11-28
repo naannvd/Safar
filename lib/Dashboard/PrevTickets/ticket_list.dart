@@ -28,7 +28,7 @@ class _TicketListState extends State<TicketList> {
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
-        final data = doc.data() as Map<String, dynamic>;
+        final data = doc.data();
         return {
           'toStation': data['toStation'],
           'fromStation': data['fromStation'],
