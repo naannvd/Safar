@@ -6,6 +6,8 @@ import 'package:safar/Dashboard/PrevTickets/ticket_list.dart';
 import 'package:safar/Dashboard/route_box.dart';
 import 'package:safar/Widgets/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:safar/private/bus_driver/driver_dashboard.dart';
+import 'package:safar/private/child/child_dashboard.dart';
 // import 'package:safar/Widgets/starting_page.dart';
 
 class LandingPage extends StatelessWidget {
@@ -102,6 +104,63 @@ class LandingPage extends StatelessWidget {
                     child: TicketList(),
                   ),
                 ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: SizedBox(
+                height: 30,
+                child: ElevatedButton(
+                    child: const Text("Child Dashboard"),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const ChildDashboard() // Navigate to the corresponding screen
+                            ),
+                      );
+                    }),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: SizedBox(
+                height: 30,
+                child: ElevatedButton(
+                    child: const Text("Driver Dashboard"),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const DriverDashboard() // Navigate to the corresponding screen
+                            ),
+                      );
+                    }),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: SizedBox(
+                height: 30,
+                child: ElevatedButton(
+                    child: const Text("Random"),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const DriverDashboard() // Navigate to the corresponding screen
+                            ),
+                      );
+                    }),
               ),
             ),
           ],
