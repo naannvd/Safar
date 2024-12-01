@@ -1,8 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:custom_rating_bar/custom_rating_bar.dart';
-import 'package:safar/Tickets/ticket_book.dart';
 import 'package:safar/Dashboard/Feedback/feedback_main.dart';
 
 class TicketBuilder extends StatelessWidget {

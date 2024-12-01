@@ -40,15 +40,15 @@ class CompleteButton extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) {
-        double _rating = 0.0;
+        double rating = 0.0;
         return AlertDialog(
-          title: Text('Rate your experience'),
+          title: const Text('Rate your experience'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               RatingBar(
                 onRatingChanged: (rating) {
-                  _rating = rating;
+                  rating = rating;
                 },
                 filledIcon: Icons.star,
                 emptyIcon: Icons.star_border,
@@ -66,7 +66,7 @@ class CompleteButton extends StatelessWidget {
                   context,
                   MaterialPageRoute(builder: (context) => const TicketBook()),
                 );
-                _completeTicket(context, _rating);
+                _completeTicket(context, rating);
               },
               child: Text(
                 'Submit',

@@ -8,6 +8,7 @@ import 'package:safar/Widgets/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:safar/private/bus_driver/driver_dashboard.dart';
 import 'package:safar/private/child/child_dashboard.dart';
+import 'package:safar/private/parent/dashboard.dart';
 // import 'package:safar/Widgets/starting_page.dart';
 
 class LandingPage extends StatelessWidget {
@@ -151,13 +152,13 @@ class LandingPage extends StatelessWidget {
               child: SizedBox(
                 height: 30,
                 child: ElevatedButton(
-                    child: const Text("Random"),
+                    child: const Text("Parent"),
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                const DriverDashboard() // Navigate to the corresponding screen
+                                const ParentDashboard() // Navigate to the corresponding screen
                             ),
                       );
                     }),
