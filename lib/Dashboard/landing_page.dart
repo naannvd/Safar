@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 // import 'package:safar/Dashboard/PrevTickets/ticket_builder.dart';
 import 'package:safar/Dashboard/PrevTickets/ticket_list.dart';
 import 'package:safar/Dashboard/route_box.dart';
+import 'package:safar/Tickets/ticket_book.dart';
 import 'package:safar/Widgets/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:safar/private/bus_driver/driver_dashboard.dart';
@@ -157,7 +158,7 @@ class LandingPage extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                const DriverDashboard() // Navigate to the corresponding screen
+                                const TicketBook() // Navigate to the corresponding screen
                             ),
                       );
                     }),
