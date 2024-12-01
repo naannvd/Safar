@@ -8,6 +8,9 @@ import 'package:safar/private/Private_Dashboards/parent_dashboard.dart';
 import 'package:safar/private/Private_Dashboards/schoolauth_dashboard.dart';
 import 'package:safar/Login/forgot_password.dart';
 import 'package:safar/Widgets/custom_scaffold.dart';
+import 'package:safar/private/bus_driver/driver_dashboard.dart';
+import 'package:safar/private/child/child_dashboard.dart';
+import 'package:safar/private/parent/dashboard.dart';
 
 class PrivateLoginScreen extends StatefulWidget {
   const PrivateLoginScreen({super.key});
@@ -35,23 +38,27 @@ class _PrivateLoginScreenState extends State<PrivateLoginScreen> {
           password: _passwordController.text.trim(),
         );
 
-        // Check user's role in Firestore
+        // Get the UID of the authenticated user
+        String uid = userCredential.user!.uid;
+
+        // Check the user's role in Firestore
         DocumentSnapshot userDoc = await FirebaseFirestore.instance
-            .collection("${_selectedUserType.toLowerCase()}s") // Dynamically get the collection
-            .doc(userCredential.user!.uid)
+            .collection(
+                "${_selectedUserType.toLowerCase()}s") // Dynamically fetch collection
+            .doc(uid) // Match the UID with the document ID
             .get();
 
         if (userDoc.exists && userDoc['role'] == _selectedUserType) {
           // Navigate to the respective dashboard
           Widget dashboard;
           if (_selectedUserType == 'Parent') {
-            dashboard = const ParentDashboardScreen();
+            dashboard = const ParentDashboard();
           } else if (_selectedUserType == 'Child') {
-            dashboard = const ChildDashboardScreen();
+            dashboard = const ChildDashboard();
           } else if (_selectedUserType == 'School Authority') {
             dashboard = const SchoolAuthDashboardScreen();
           } else {
-            dashboard = const DriverDashboardScreen();
+            dashboard = const DriverDashboard();
           }
 
           Navigator.pushReplacement(
@@ -61,7 +68,6 @@ class _PrivateLoginScreenState extends State<PrivateLoginScreen> {
             ),
           );
         } else {
-          // If role mismatch or no record found
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text(
@@ -281,7 +287,7 @@ class _PrivateLoginScreenState extends State<PrivateLoginScreen> {
                           height: 50,
                           child: ElevatedButton(
                             style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all<Color>(
+                              backgroundColor: MaterialStateProperty.all<Color>(
                                 const Color(0xFFA1CA73),
                               ),
                             ),

@@ -108,63 +108,6 @@ class LandingPage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Center(
-              child: SizedBox(
-                height: 30,
-                child: ElevatedButton(
-                    child: const Text("Child Dashboard"),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const ChildDashboard() // Navigate to the corresponding screen
-                            ),
-                      );
-                    }),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Center(
-              child: SizedBox(
-                height: 30,
-                child: ElevatedButton(
-                    child: const Text("Driver Dashboard"),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const DriverDashboard() // Navigate to the corresponding screen
-                            ),
-                      );
-                    }),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Center(
-              child: SizedBox(
-                height: 30,
-                child: ElevatedButton(
-                    child: const Text("Parent"),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const DriverDashboard() // Navigate to the corresponding screen
-                            ),
-                      );
-                    }),
-              ),
-            ),
           ],
         ),
       ),
