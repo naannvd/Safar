@@ -12,7 +12,7 @@ class ProfileEdit extends StatefulWidget {
   const ProfileEdit({super.key});
 
   @override
-  _ProfileEditState createState() => _ProfileEditState();
+  State<ProfileEdit> createState() => _ProfileEditState();
 }
 
 class _ProfileEditState extends State<ProfileEdit> {

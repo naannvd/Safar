@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class RideStatusScreen extends StatefulWidget {
   final String rideId;
@@ -12,71 +11,6 @@ class RideStatusScreen extends StatefulWidget {
 }
 
 class _RideStatusScreenState extends State<RideStatusScreen> {
-  List<Map<String, dynamic>> boardedStudents = [];
-  bool isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchBoardedStudents();
-  }
-
-  // Fetch students who have boarded
-  Future<void> fetchBoardedStudents() async {
-    try {
-      final rideDoc = await FirebaseFirestore.instance
-          .collection('rides')
-          .doc(widget.rideId)
-          .get();
-
-      if (rideDoc.exists && rideDoc.data() != null) {
-        setState(() {
-          boardedStudents = List<Map<String, dynamic>>.from(
-              rideDoc.data()!['students'] ?? []);
-          isLoading = false;
-        });
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error fetching students: $e")),
-      );
-    }
-  }
-
-  // Assign a student as a champion
-  Future<void> assignChampion(String studentId) async {
-    try {
-      await FirebaseFirestore.instance
-          .collection('rides')
-          .doc(widget.rideId)
-          .update({
-        'students': boardedStudents.map((student) {
-          if (student['student_id'] == studentId) {
-            student['isChampion'] = true;
-          }
-          return student;
-        }).toList(),
-      });
-
-      setState(() {
-        boardedStudents = boardedStudents.map((student) {
-          if (student['student_id'] == studentId) {
-            student['isChampion'] = true;
-          }
-          return student;
-        }).toList();
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Champion assigned successfully!")),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error assigning champion: $e")),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,37 +46,70 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
             ),
             const SizedBox(height: 20),
 
-            // List of Boarded Students
+            // StreamBuilder for List of Students
             Expanded(
-              child: isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : boardedStudents.isEmpty
-                      ? const Center(
-                          child: Text(
-                            "No students have boarded yet.",
-                            style: TextStyle(fontSize: 16),
+              child: StreamBuilder<DocumentSnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('rides')
+                    .doc(widget.rideId)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text("Error: ${snapshot.error}"),
+                    );
+                  }
+
+                  if (!snapshot.hasData || snapshot.data?.data() == null) {
+                    return const Center(
+                      child: Text(
+                        "No ride data found.",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    );
+                  }
+
+                  final rideData =
+                      snapshot.data!.data() as Map<String, dynamic>;
+                  final students = List<Map<String, dynamic>>.from(
+                      rideData['students'] ?? []);
+
+                  if (students.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        "No students found for this ride.",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    );
+                  }
+
+                  return ListView.builder(
+                    itemCount: students.length,
+                    itemBuilder: (context, index) {
+                      final student = students[index];
+                      return Card(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16),
+                        child: ListTile(
+                          title: Text(student['name'] ?? 'Unknown'),
+                          subtitle: Text(
+                            student['is_boarded'] == true
+                                ? "Status: Boarded"
+                                : "Status: Not Boarded",
                           ),
-                        )
-                      : ListView.builder(
-                          itemCount: boardedStudents.length,
-                          itemBuilder: (context, index) {
-                            final student = boardedStudents[index];
-                            return ListTile(
-                              title: Text(student['student_id']),
-                              subtitle: Text(student['isChampion'] == true
-                                  ? "Champion"
-                                  : "Not Champion"),
-                              trailing: student['isChampion'] == true
-                                  ? const Icon(Icons.star, color: Colors.amber)
-                                  : ElevatedButton(
-                                      onPressed: () {
-                                        assignChampion(student['student_id']);
-                                      },
-                                      child: const Text("Assign Champion"),
-                                    ),
-                            );
-                          },
+                          trailing: student['is_champion'] == true
+                              ? const Icon(Icons.star, color: Colors.amber)
+                              : null,
                         ),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ],
         ),

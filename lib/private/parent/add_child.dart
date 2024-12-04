@@ -15,12 +15,23 @@ class _AddChildDashboardState extends State<AddChildDashboard> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  bool hasBoarded = true;
-  bool isChampion = false;
-
   Future<void> _signUpUser() async {
     if (_formSignupKey.currentState!.validate()) {
       try {
+        // Get current parent credentials
+        final parentUser = FirebaseAuth.instance.currentUser!;
+        final parentEmail = parentUser.email; // Parent email
+        final parentUid = parentUser.uid; // Parent UID
+        final parentPassword =
+            await promptParentForPassword(); // Prompt for password
+
+        if (parentPassword == null || parentEmail == null) {
+          throw Exception("Parent credentials are missing.");
+        }
+
+        // Ensure current user is signed out before creating a new user
+        await FirebaseAuth.instance.signOut();
+
         // Create child user with Firebase Authentication
         UserCredential userCredential =
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -31,19 +42,44 @@ class _AddChildDashboardState extends State<AddChildDashboard> {
         // Get the UID of the newly created child user
         String childUid = userCredential.user!.uid;
 
+        // Log out the child user and reauthenticate the parent
+        await FirebaseAuth.instance.signOut();
+
+        try {
+          // Re-authenticate the parent user
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: parentEmail,
+            password: parentPassword,
+          );
+        } on FirebaseAuthException catch (e) {
+          // If parent re-authentication fails, delete the created child account
+          await FirebaseAuth.instance.currentUser?.delete();
+          throw Exception(
+              "Parent re-authentication failed. Child account deleted.");
+        }
+
         // Store child details in Firestore
         await FirebaseFirestore.instance
             .collection('childs')
             .doc(childUid) // Use the UID as the document ID
             .set({
-          'username': _usernameController.text.trim(),
+          'child_name': _usernameController.text.trim(),
           'email': _emailController.text.trim(),
           'createdAt': Timestamp.now(),
           'role': 'Child',
-          'is_boarded': hasBoarded,
-          'is_champion': isChampion,
-          'parent_id': FirebaseAuth.instance.currentUser!.uid, // Parent UID
+          'is_boarded': false,
+          'is_champion': false,
+          'is_present': false,
+          'parent_id': parentUid, // Parent UID
           'child_id': childUid, // Use the UID as the child_id
+        });
+
+        // Update parent collection with child ID
+        await FirebaseFirestore.instance
+            .collection('parents')
+            .doc(parentUid)
+            .update({
+          'children': FieldValue.arrayUnion([childUid]),
         });
 
         // Success feedback
@@ -78,6 +114,52 @@ class _AddChildDashboardState extends State<AddChildDashboard> {
     }
   }
 
+  Future<String?> promptParentForPassword() async {
+    String? password;
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        final TextEditingController passwordController =
+            TextEditingController();
+        return AlertDialog(
+          title: const Text("Re-authentication Required"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("Please enter your password to continue."),
+              const SizedBox(height: 10),
+              TextField(
+                controller: passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  labelText: "Password",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                password = null; // Cancel
+                Navigator.of(context).pop();
+              },
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                password = passwordController.text.trim();
+                Navigator.of(context).pop();
+              },
+              child: const Text("Submit"),
+            ),
+          ],
+        );
+      },
+    );
+    return password;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,6 +171,7 @@ class _AddChildDashboardState extends State<AddChildDashboard> {
         child: Form(
           key: _formSignupKey,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
@@ -134,9 +217,11 @@ class _AddChildDashboardState extends State<AddChildDashboard> {
                 ),
               ),
               const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: _signUpUser,
-                child: const Text('Add Child'),
+              Center(
+                child: ElevatedButton(
+                  onPressed: _signUpUser,
+                  child: const Text('Add Child'),
+                ),
               ),
             ],
           ),

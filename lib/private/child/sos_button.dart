@@ -22,7 +22,7 @@ class _SOSButtonState extends State<SOSButton> {
   Future<void> _checkChampionStatus() async {
     try {
       final userDoc = await FirebaseFirestore.instance
-          .collection('child') // Adjust collection if needed
+          .collection('childs') // Adjust collection if needed
           .doc(widget.studentId)
           .get();
 
