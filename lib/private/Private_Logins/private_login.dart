@@ -287,7 +287,7 @@ class _PrivateLoginScreenState extends State<PrivateLoginScreen> {
                           height: 50,
                           child: ElevatedButton(
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
+                              backgroundColor: WidgetStateProperty.all<Color>(
                                 const Color(0xFFA1CA73),
                               ),
                             ),

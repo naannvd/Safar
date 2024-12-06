@@ -4,12 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 // import 'package:safar/Dashboard/PrevTickets/ticket_builder.dart';
 import 'package:safar/Dashboard/PrevTickets/ticket_list.dart';
 import 'package:safar/Dashboard/route_box.dart';
-import 'package:safar/Tickets/ticket_book.dart';
 import 'package:safar/Widgets/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:safar/private/bus_driver/driver_dashboard.dart';
-import 'package:safar/private/child/child_dashboard.dart';
-import 'package:safar/private/parent/dashboard.dart';
 // import 'package:safar/Widgets/starting_page.dart';
 
 class LandingPage extends StatelessWidget {
