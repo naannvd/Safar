@@ -37,16 +37,30 @@ class _PrivateSignUpScreenState extends State<PrivateSignUpScreen> {
         final user = FirebaseAuth.instance.currentUser;
 
         // Save user details to the respective collection in Firestore
-        await FirebaseFirestore.instance
-            .collection(targetCollection) // Store in the dynamic collection
-            .doc(userCredential.user!.uid)
-            .set({
-          'fullName': _fullNameController.text.trim(),
-          'email': _emailController.text.trim(),
-          'createdAt': Timestamp.now(),
-          'role': _selectedUserType, // Store the role for reference
-          'user_id': user!.uid,
-        });
+        if (_selectedUserType == 'Parent') {
+          await FirebaseFirestore.instance
+              .collection('parents')
+              .doc(userCredential.user!.uid)
+              .set({
+            'parent_name': _fullNameController.text.trim(),
+            'email': _emailController.text.trim(),
+            'createdAt': Timestamp.now(),
+            'role': _selectedUserType,
+            'parent_id': user!.uid,
+            'children': [],
+          });
+        } else if (_selectedUserType == 'Driver') {
+          await FirebaseFirestore.instance
+              .collection('drivers')
+              .doc(userCredential.user!.uid)
+              .set({
+            'driver_name': _fullNameController.text.trim(),
+            'email': _emailController.text.trim(),
+            'createdAt': Timestamp.now(),
+            'role': _selectedUserType,
+            'driver_id': user!.uid,
+          });
+        }
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

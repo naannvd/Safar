@@ -60,6 +60,7 @@ dependencies:
   permission_handler: ^11.3.1
   custom_rating_bar: ^3.0.0
   quickalert: ^1.1.0
+  tap_to_expand: ^0.7.2
   http: ^1.2.2
 
 dev_dependencies:

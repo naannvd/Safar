@@ -2,15 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:safar/private/Private_Dashboards/child_dashboard.dart';
-import 'package:safar/private/Private_Dashboards/driver_dashboard.dart';
-import 'package:safar/private/Private_Dashboards/parent_dashboard.dart';
 import 'package:safar/private/Private_Dashboards/schoolauth_dashboard.dart';
 import 'package:safar/Login/forgot_password.dart';
 import 'package:safar/Widgets/custom_scaffold.dart';
 import 'package:safar/private/bus_driver/driver_dashboard.dart';
 import 'package:safar/private/child/child_dashboard.dart';
-import 'package:safar/private/parent/dashboard.dart';
+import 'package:safar/private/parent/parent_dashboard.dart';
 
 class PrivateLoginScreen extends StatefulWidget {
   const PrivateLoginScreen({super.key});
