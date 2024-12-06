@@ -1,10 +1,28 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:safar_admin/dashboard/dashboard.dart';
+import 'package:safar_admin/dashboard/main_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  try {
+    if (kIsWeb) {
+      await Firebase.initializeApp(
+        options: const FirebaseOptions(
+          apiKey: "AIzaSyAKMoEkOamGbcX3naG0cO7q_l4hmZtfWBc",
+          appId: "1:1048390334337:web:35ef0a77449c4656289a80",
+          messagingSenderId: "1048390334337",
+          projectId: "safar-6b838",
+        ),
+      );
+      print("Firebase initialized for Web.");
+    } else {
+      await Firebase.initializeApp();
+      print("Firebase initialized for Mobile/Other platforms.");
+    }
+  } catch (e) {
+    print("Firebase initialization failed: $e");
+  }
   runApp(const SafarAdminDashboard());
 }
 

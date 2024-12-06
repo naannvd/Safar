@@ -85,8 +85,10 @@ class Sidebar extends StatelessWidget {
       case 5:
         return Icons.inbox;
       case 6:
-        return Icons.bar_chart;
+        return Icons.feedback;
       case 7:
+        return Icons.bar_chart;
+      case 8:
         return Icons.settings;
       default:
         return Icons.dashboard;
