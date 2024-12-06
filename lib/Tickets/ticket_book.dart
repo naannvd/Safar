@@ -7,7 +7,15 @@ import 'package:safar/Tickets/ticket_support.dart';
 import 'package:safar/Widgets/bottom_nav_bar.dart';
 
 class TicketBook extends StatefulWidget {
-  const TicketBook({super.key});
+  final String selectedLine;
+  final String fromStation;
+  final String toStation;
+
+  const TicketBook(
+      {super.key,
+      this.selectedLine = '',
+      this.fromStation = '',
+      this.toStation = ''});
 
   @override
   State<TicketBook> createState() => _TicketBookState();
