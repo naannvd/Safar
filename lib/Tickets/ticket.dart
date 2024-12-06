@@ -5,7 +5,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:safar/Tickets/complete_button.dart';
+// import 'package:safar/Tickets/feedback_button.dart';
 import 'package:safar/Tickets/qr_generate.dart';
+// import 'package:safar/Tickets/ticket_book.dart';
 import 'package:safar/Widgets/bottom_nav_bar.dart';
 
 class TicketCard extends StatelessWidget {
@@ -132,7 +134,7 @@ class TicketCard extends StatelessWidget {
           String toStation = ticketData['toStation'] ?? 'Unknown Station';
           String fromStation = ticketData['fromStation'] ?? 'Unknown Station';
           String ticketId = ticketData['ticketId'] ?? 'Unknown ID';
-          String userName = ticketData['userName'] ?? 'Unknown User';
+          // String userName = ticketData['userName'] ?? 'Unknown User';
           String purchaseTime = formatDate(ticketData['purchaseTime'] != null
               ? (ticketData['purchaseTime'])
               : 'Unknown Time');
@@ -421,13 +423,13 @@ class TicketCard extends StatelessWidget {
                                 textAlign: TextAlign.center,
                               ),
                               TicketQR(
-                                // fromStation: fromStation,
-                                // toStation: toStation,
-                                // ticketNumber: ticketId,
-                                // purchaseTime: purchaseTime,
-                                // timeToNextStation: timeToNextStation
-                                ticketId: ticketId,
-                              )
+                                  fromStation: fromStation,
+                                  toStation: toStation,
+                                  ticketNumber: ticketId,
+                                  purchaseTime: purchaseTime,
+                                  timeToNextStation: timeToNextStation
+                                  // ticketId: ticketId,
+                                  )
                             ],
                           ),
                         ),
@@ -444,6 +446,7 @@ class TicketCard extends StatelessWidget {
                 ),
               ),
               CompleteButton(ticketData: ticketData),
+              // const FeedbackButton(),
             ],
           );
         },
