@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:safar/private/child/attendance_QR.dart';
 import 'package:safar/private/child/sos_button.dart';
@@ -7,28 +8,34 @@ class ChildDashboard extends StatelessWidget {
   const ChildDashboard({super.key});
 
   Future<String> getUserName() async {
-    // final user = FirebaseAuth.instance.currentUser;
-    final userData = await FirebaseFirestore.instance
-        .collection('child')
-        .doc('xaMlRklksngSQBJneAML')
-        .get();
-    final fullName = userData['child_name'];
-    return fullName;
+    final user = FirebaseAuth.instance.currentUser;
+
+    try {
+      final userData = await FirebaseFirestore.instance
+          .collection('childs')
+          .doc(user!.uid)
+          .get();
+      final fullName = userData['child_name'];
+      return fullName;
+    } on Exception catch (e) {
+      // TODO
+    }
+    return 'User not found';
   }
 
   @override
   Widget build(BuildContext context) {
-    // final student = FirebaseAuth.instance.currentUser;
+    final student = FirebaseAuth.instance.currentUser;
     return FutureBuilder<String>(
       future: getUserName(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          // print(student!.uid);
           print('Error: ${snapshot.error}');
           return const Center(child: Text('Error fetching data'));
         } else {
+          // print(student!.uid);
           return Scaffold(
             backgroundColor: Colors.white,
             body: Center(
@@ -40,8 +47,7 @@ class ChildDashboard extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              const AttendanceQR(qrData: 'teri maa ki chut'),
+                          builder: (context) => const ChildQRCodeWidget(),
                         ),
                       );
                     },
@@ -49,7 +55,8 @@ class ChildDashboard extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   Text('Child Dashboard: ${snapshot.data}'),
-                  const SOSButton(studentId: 'xaMlRklksngSQBJneAML'),
+                  const SizedBox(height: 20),
+                  SOSButton(studentId: student!.uid),
                 ],
               ),
             ),

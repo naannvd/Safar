@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:safar/private/bus_driver/driver_functionality/mark_attendance.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:safar/private/bus_driver/driver_functionality/present_students.dart';
 
 class RideStatusScreen extends StatefulWidget {
   final String rideId;
@@ -33,84 +35,26 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
             const SizedBox(height: 20),
 
             // Placeholder for Map
-            Container(
-              height: 200,
-              width: double.infinity,
-              color: Colors.grey[300],
-              child: const Center(
-                child: Text(
-                  "Map Placeholder",
-                  style: TextStyle(fontSize: 16, color: Colors.black54),
-                ),
+            // Container(
+            //   height: 200,
+            //   width: double.infinity,
+            //   color: Colors.grey[300],
+            //   child: const Center(
+            //     child: Text(
+            //       "Map Placeholder",
+            //       style: TextStyle(fontSize: 16, color: Colors.black54),
+            //     ),
+            //   ),
+            // ),
+            const SizedBox(height: 20),
+            // ignore: avoid_unnecessary_containers
+            Expanded(
+              child: PresentStudents(
+                rideId: widget.rideId,
               ),
             ),
             const SizedBox(height: 20),
-
-            // StreamBuilder for List of Students
-            Expanded(
-              child: StreamBuilder<DocumentSnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('rides')
-                    .doc(widget.rideId)
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
-                  if (snapshot.hasError) {
-                    return Center(
-                      child: Text("Error: ${snapshot.error}"),
-                    );
-                  }
-
-                  if (!snapshot.hasData || snapshot.data?.data() == null) {
-                    return const Center(
-                      child: Text(
-                        "No ride data found.",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    );
-                  }
-
-                  final rideData =
-                      snapshot.data!.data() as Map<String, dynamic>;
-                  final students = List<Map<String, dynamic>>.from(
-                      rideData['students'] ?? []);
-
-                  if (students.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        "No students found for this ride.",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    );
-                  }
-
-                  return ListView.builder(
-                    itemCount: students.length,
-                    itemBuilder: (context, index) {
-                      final student = students[index];
-                      return Card(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 16),
-                        child: ListTile(
-                          title: Text(student['name'] ?? 'Unknown'),
-                          subtitle: Text(
-                            student['is_boarded'] == true
-                                ? "Status: Boarded"
-                                : "Status: Not Boarded",
-                          ),
-                          trailing: student['is_champion'] == true
-                              ? const Icon(Icons.star, color: Colors.amber)
-                              : null,
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
+            const AttendanceQRScanner(),
           ],
         ),
       ),

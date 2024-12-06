@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -63,35 +64,84 @@ class _BarcodeScannerWithScanWindowState
     );
   }
 
-  void _handleScannedBarcode(String rawValue) {
+  void _handleScannedBarcode(String rawValue) async {
     try {
-      // Try decoding the JSON data from the QR code
-      final decodedData = jsonDecode(rawValue) as Map<String, dynamic>;
+      // Assume the rawValue is a string containing the child_id
+      final String childId = rawValue.trim();
+      print("Scanned child_id: $childId");
 
-      // Display the ticket details in a dialog
-      showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: const Text('Ticket Details'),
-          content: Text(
-            'From: ${decodedData['fromStation']}\n'
-            'To: ${decodedData['toStation']}\n'
-            'Ticket Number: ${decodedData['ticketNumber']}\n'
-            'Purchase Time: ${decodedData['purchaseTime']}\n'
-            'Time to Next Station: ${decodedData['timeToNextStation']}',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK'),
+      // Fetch the child's data from Firestore
+      final childData = await _fetchChildData(childId);
+
+      if (childData != null) {
+        // Display the child's details in a dialog
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: const Text('Child Details'),
+            content: Text(
+              'Name: ${childData['child_name']}\n'
+              'ID: $childId',
             ),
-          ],
-        ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+
+        // Update the child's status as boarded
+        await _updateChildBoardedStatus(childId);
+
+        // Optionally, notify the parent
+        // await _notifyParent(childData['parent_id'], childData['child_name']);
+      } else {
+        // If no child data is found
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Child not found in database.')),
+        );
+      }
+    } catch (e) {
+      // Handle errors
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error processing QR code: $e')),
+      );
+    }
+  }
+
+  Future<Map<String, dynamic>?> _fetchChildData(String childId) async {
+    try {
+      final doc = await FirebaseFirestore.instance
+          .collection('childs')
+          .doc(childId)
+          .get();
+
+      if (doc.exists) {
+        return doc.data();
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print("Error fetching child data: $e");
+      return null;
+    }
+  }
+
+  Future<void> _updateChildBoardedStatus(String childId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('childs')
+          .doc(childId)
+          .update({'is_boarded': true});
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Child marked as boarded successfully!")),
       );
     } catch (e) {
-      // Handle invalid JSON or other errors
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invalid QR code: $e')),
+        SnackBar(content: Text("Error updating boarded status: $e")),
       );
     }
   }
