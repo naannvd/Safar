@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:safar/Private_Side/private_signup.dart';
+import 'package:safar/private/Private_Logins/private_signup.dart';
 import 'package:safar/widgets/custom_scaffold.dart';
 import 'package:safar/widgets/welcome_button.dart';
 import 'package:safar/Login/signin_screen.dart';
 import 'package:safar/Login/signup_screen.dart';
-import 'package:safar/Private_Side/private_login.dart';
+import 'package:safar/private/Private_Logins/private_login.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
