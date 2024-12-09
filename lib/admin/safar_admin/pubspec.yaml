@@ -43,11 +43,8 @@ dependencies:
   googleapis: ^13.2.0
   googleapis_auth: ^1.6.0
   fl_chart: ^0.69.2
-<<<<<<< HEAD
 
-=======
   # syncfusion_flutter_charts: ^27.2.5
->>>>>>> backup2
 
 dev_dependencies:
   flutter_test:

@@ -1,11 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-=======
 import 'package:safar_admin/dashboard/login_screen.dart';
->>>>>>> backup2
-import 'package:safar_admin/dashboard/main_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

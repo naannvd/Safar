@@ -23,22 +23,9 @@ class FeedbackScreen extends StatelessWidget {
 
   Future<Map<String, dynamic>> analyzeFeedbackWithHuggingFace(
       String text) async {
-<<<<<<< HEAD
-<<<<<<< HEAD
     const apiKey = "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";
     const apiUrl =
         "https://api-inference.huggingface.co/models/cardiffnlp/twitter-roberta-base-sentiment-latest";
-=======
-    const apiKey =
-        "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"; // Replace with your Hugging Face API token
-    const apiUrl =
-        "https://api-inference.huggingface.co/models/distilbert-base-uncased-finetuned-sst-2-english";
->>>>>>> 35e4a5838ee0d8e2109d4bd483c51fba98531cf0
-=======
-    const apiKey = "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";
-    const apiUrl =
-        "https://api-inference.huggingface.co/models/cardiffnlp/twitter-roberta-base-sentiment-latest";
->>>>>>> backup2
 
     try {
       final response = await http.post(
@@ -51,15 +38,10 @@ class FeedbackScreen extends StatelessWidget {
       );
 
       if (response.statusCode == 200) {
-<<<<<<< HEAD
         final decodedResponse = json.decode(response.body) as List<dynamic>;
         print("API Response: $decodedResponse");
 
-<<<<<<< HEAD
         if (decodedResponse.isNotEmpty) {
-=======
-        if (decodedResponse.isNotEmpty && decodedResponse[0] is List<dynamic>) {
->>>>>>> 35e4a5838ee0d8e2109d4bd483c51fba98531cf0
           final predictions = decodedResponse[0] as List<dynamic>;
           final bestPrediction = predictions.reduce((a, b) =>
               (a['score'] as double) > (b['score'] as double) ? a : b);
@@ -69,30 +51,6 @@ class FeedbackScreen extends StatelessWidget {
             "score": bestPrediction['score'],
           };
         }
-=======
-        // Decode the response
-        final decodedResponse = json.decode(response.body);
-
-        print("API Response: $decodedResponse");
-
-        // Ensure the response is in the expected structure
-        if (decodedResponse is List && decodedResponse.isNotEmpty) {
-          // Extract predictions (assumes the first item is relevant)
-          final predictions = decodedResponse[0] as List<dynamic>;
-          if (predictions.isNotEmpty) {
-            final bestPrediction = predictions.reduce((a, b) =>
-                (a['score'] as double) > (b['score'] as double) ? a : b);
-
-            // Return the label and score
-            return {
-              "label": bestPrediction['label'] as String,
-              "score": bestPrediction['score'] as double,
-            };
-          }
-        }
-
-        // Fallback if structure is unexpected
->>>>>>> backup2
         return {"label": "Unknown", "score": 0.0};
       } else {
         print("Error from Hugging Face API: ${response.body}");
@@ -180,32 +138,14 @@ class FeedbackScreen extends StatelessWidget {
                       ((analysis["score"] ?? 0.0) * 100).toStringAsFixed(2);
 
                   // Determine sentiment label color
-<<<<<<< HEAD
-<<<<<<< HEAD
                   Color sentimentColor;
                   if (sentiment == "POSITIVE") {
                     sentimentColor = Colors.green;
                   } else if (sentiment == "NEGATIVE") {
-=======
-                  Color sentimentColor;
-                  if (sentiment.toUpperCase() == "POSITIVE") {
-                    sentimentColor = Colors.green;
-                  } else if (sentiment.toUpperCase() == "NEGATIVE") {
->>>>>>> backup2
                     sentimentColor = Colors.red;
                   } else {
                     sentimentColor = Colors.yellow[700]!;
                   }
-<<<<<<< HEAD
-=======
-                  final sentimentColor = sentiment == "POSITIVE"
-                      ? Colors.green
-                      : sentiment == "NEGATIVE"
-                          ? Colors.red
-                          : Colors.orange;
->>>>>>> 35e4a5838ee0d8e2109d4bd483c51fba98531cf0
-=======
->>>>>>> backup2
 
                   return Card(
                     color: Colors.white,
@@ -217,13 +157,6 @@ class FeedbackScreen extends StatelessWidget {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-                          // Feedback details
->>>>>>> 35e4a5838ee0d8e2109d4bd483c51fba98531cf0
-=======
->>>>>>> backup2
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,15 +166,7 @@ class FeedbackScreen extends StatelessWidget {
                                   style: GoogleFonts.montserrat(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
-<<<<<<< HEAD
-<<<<<<< HEAD
                                     color: const Color(0xFF042F40),
-=======
-                                    color: Color(0xFF042F40),
->>>>>>> 35e4a5838ee0d8e2109d4bd483c51fba98531cf0
-=======
-                                    color: const Color(0xFF042F40),
->>>>>>> backup2
                                   ),
                                 ),
                                 const SizedBox(height: 8),
@@ -262,13 +187,6 @@ class FeedbackScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-                          // Sentiment and confidence labels
->>>>>>> 35e4a5838ee0d8e2109d4bd483c51fba98531cf0
-=======
->>>>>>> backup2
                           Column(
                             children: [
                               Container(
