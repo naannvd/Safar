@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:custom_rating_bar/custom_rating_bar.dart';
+import 'package:safar/Payment/pages/home_page.dart';
+import 'package:safar/Tickets/ticket.dart';
 import 'package:safar/Tickets/ticket_book.dart';
 
 class CompleteButton extends StatelessWidget {
@@ -12,7 +14,21 @@ class CompleteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _showRatingDialog(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PaymentScreen(
+              onPaymentSuccess: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const TicketCard(),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
       },
       child: Container(
         width: double.infinity,
@@ -47,12 +63,11 @@ class CompleteButton extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               RatingBar(
-                onRatingChanged: (rating) {
-                  rating = rating;
+                onRatingChanged: (newRating) {
+                  rating = newRating;
                 },
                 filledIcon: Icons.star,
                 emptyIcon: Icons.star_border,
-                // isHalfAllowed: true,
                 filledColor: Colors.amber,
                 emptyColor: Colors.grey,
                 size: 36,
@@ -82,25 +97,20 @@ class CompleteButton extends StatelessWidget {
 
   Future<void> _completeTicket(BuildContext context, double rating) async {
     try {
-      final ticketId = ticketData['ticketId']; // The ticketId stored as a field
-      // Get the future QuerySnapshot
-      Future<QuerySnapshot<Map<String, dynamic>>> futureTicketQuery =
-          FirebaseFirestore.instance
+      final ticketId = ticketData['ticketId'];
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await FirebaseFirestore.instance
               .collection('tickets')
               .where('ticketId', isEqualTo: ticketId)
               .limit(1)
               .get();
-      QuerySnapshot<Map<String, dynamic>> querySnapshot =
-          await futureTicketQuery;
       if (querySnapshot.docs.isNotEmpty) {
         DocumentReference ticketDocRef = querySnapshot.docs.first.reference;
-        // Update the ticket with status completed and save the rating
         await ticketDocRef.update({
           'status': 'completed',
           'rating': rating,
         });
 
-        // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Ticket completed successfully!')),
         );
@@ -111,9 +121,7 @@ class CompleteButton extends StatelessWidget {
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error completing ticket: $e'),
-        ),
+        SnackBar(content: Text('Error completing ticket: $e')),
       );
     }
   }
