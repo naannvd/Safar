@@ -30,7 +30,7 @@ class RideStart extends StatelessWidget {
           .doc(user.uid)
           .get();
       if (doc.exists) {
-        return doc.data()?['fullName'] ?? "No name found";
+        return doc.data()?['driver_name'] ?? "No name found";
       } else {
         return "Driver not found";
       }

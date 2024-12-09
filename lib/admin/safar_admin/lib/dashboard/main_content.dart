@@ -88,10 +88,16 @@ class MainContent extends StatelessWidget {
                 child: Card(
                   elevation: 4,
                   child: Container(
+<<<<<<< HEAD
                     height: 400, // Adjusted to accommodate the NLP Widget
                     padding: const EdgeInsets.all(16),
                     child:
                         const HuggingFaceStreamNlpWidget(), // Add the NLP Widget here
+=======
+                    height: 400,
+                    padding: const EdgeInsets.all(16),
+                    child: const HuggingFaceStreamNlpWidget(),
+>>>>>>> backup2
                   ),
                 ),
               ),

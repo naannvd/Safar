@@ -90,6 +90,8 @@ class Sidebar extends StatelessWidget {
         return Icons.bar_chart;
       case 8:
         return Icons.settings;
+      case 9:
+        return Icons.logout;
       default:
         return Icons.dashboard;
     }

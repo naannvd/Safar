@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
+<<<<<<< HEAD
 class NotificationsScreen extends StatelessWidget {
   const NotificationsScreen({super.key});
+=======
+class TicketsScreen extends StatelessWidget {
+  const TicketsScreen({super.key});
+>>>>>>> backup2
 
   @override
   Widget build(BuildContext context) {
