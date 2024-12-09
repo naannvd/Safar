@@ -61,6 +61,8 @@ dependencies:
   custom_rating_bar: ^3.0.0
   quickalert: ^1.1.0
   tap_to_expand: ^0.7.2
+  flutter_animated_button: ^2.0.3
+  geolocator: ^13.0.2
 
 dev_dependencies:
   flutter_test:

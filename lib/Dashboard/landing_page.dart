@@ -60,13 +60,13 @@ class LandingPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 100),
+                      const SizedBox(height: 66),
                       Text(
                         "Welcome, ${snapshot.data}",
                         style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 15,
                       ),
                       const RouteBox(),
                     ],
@@ -108,6 +108,24 @@ class LandingPage extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 20),
+              child: Text(
+                'Saved Routes',
+                style: GoogleFonts.montserrat(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF042F42),
+                ),
+              ),
+            ),
+            Container(
+              height: 130,
+              decoration: BoxDecoration(color: Colors.grey[200]),
+            )
           ],
         ),
       ),

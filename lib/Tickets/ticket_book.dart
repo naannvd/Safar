@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:safar/Dashboard/landing_page.dart';
+import 'package:safar/Tickets/save_route.dart';
 import 'package:safar/Tickets/station_drop_down.dart';
 import 'package:safar/Tickets/ticket.dart';
 import 'package:safar/Tickets/ticket_support.dart';
@@ -221,13 +223,17 @@ class _TicketBookState extends State<TicketBook> {
               height: 30,
             ),
             if (_selectedLine != null)
-              ElevatedButton(
+              ElevatedButton.icon(
+                icon: Icon(
+                  Icons.train,
+                  color: _selectedLine != null ? Colors.white : Colors.black,
+                ),
                 style: ElevatedButton.styleFrom(
                     backgroundColor: _selectedLine != null
                         ? lineColors[_selectedLine]
                         : Colors.grey[300],
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 12)),
+                        horizontal: 22, vertical: 8)),
                 onPressed: () async {
                   if (_selectedStationFrom != null &&
                       _selectedStationTo != null &&
@@ -295,10 +301,62 @@ class _TicketBookState extends State<TicketBook> {
                     );
                   }
                 },
-                child: Text(
+                label: Text(
                   'Book Ticket',
                   style: GoogleFonts.montserrat(
                     fontSize: 20,
+                    color: _selectedLine != null ? Colors.white : Colors.black,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            const SizedBox(
+              height: 10,
+            ),
+            if (_selectedLine != null)
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: _selectedLine != null
+                        ? lineColors[_selectedLine]
+                        : Colors.grey[300],
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 8)),
+                onPressed: () async {
+                  if (_selectedStationFrom != null &&
+                      _selectedStationTo != null &&
+                      _selectedLine != null) {
+                    try {
+                      await SaveRoute().saveRoute(
+                        userId: FirebaseAuth.instance.currentUser!.uid,
+                        fromStation: _selectedStationFrom!,
+                        toStation: _selectedStationTo!,
+                        routeName: _selectedLine!,
+                      );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LandingPage(),
+                        ),
+                      );
+                    } catch (e) {
+                      print(e);
+                    }
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please select a line and stations.'),
+                      ),
+                    );
+                  }
+                },
+                icon: Icon(
+                  Icons.save,
+                  color: _selectedLine != null ? Colors.white : Colors.black,
+                ),
+                label: Text(
+                  'Save Route ',
+                  style: GoogleFonts.montserrat(
+                    fontSize: 14,
                     color: _selectedLine != null ? Colors.white : Colors.black,
                     fontWeight: FontWeight.w400,
                   ),

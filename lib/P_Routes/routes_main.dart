@@ -1,11 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_button/flutter_animated_button.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:safar/P_Routes/Services/directions_service.dart';
+import 'package:safar/P_Routes/Services/location_service.dart';
+import 'package:safar/P_Routes/Services/stations_repository.dart';
+import 'package:safar/P_Routes/closest_station.dart';
 import 'package:safar/P_Routes/route_card.dart';
+
+// Create instances of your services here.
+// Make sure you have a valid API key for DirectionsService and set up Firebase first.
+final locationService = LocationService();
+final stationsRepository = StationsRepository(
+  firestore: FirebaseFirestore.instance,
+);
+final directionsService =
+    DirectionsService(apiKey: 'AIzaSyD4KSX8nkp7JTb7WqOFk_HU1Cn-lXH9lrg');
 
 class RoutesMain extends StatelessWidget {
   const RoutesMain({super.key});
 
-  // Function to get routes from Firestore
   Future<List<String>> getRoutes() async {
     try {
       final routesSnapshot =
@@ -32,10 +46,39 @@ class RoutesMain extends StatelessWidget {
             style: Theme.of(context).textTheme.displayLarge,
           ),
           const SizedBox(height: 80),
-          // Using FutureBuilder to dynamically get routes
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: AnimatedButton(
+              height: 50,
+              width: 200,
+              text: 'Nearest Station?',
+              isReverse: true,
+              selectedTextColor: const Color(0xFF042F42),
+              transitionType: TransitionType.LEFT_TO_RIGHT,
+              textStyle: GoogleFonts.montserrat(fontWeight: FontWeight.w500),
+              backgroundColor: const Color(0xFFA1CA73),
+              borderColor: Colors.white,
+              borderRadius: 50,
+              borderWidth: 2,
+              onPress: () {
+                // Navigate to the ClosestStation screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ClosestStation(
+                      locationService: locationService,
+                      stationsRepository: stationsRepository,
+                      directionsService: directionsService,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+
           Expanded(
             child: FutureBuilder<List<String>>(
-              future: getRoutes(), // Call the function that fetches the routes
+              future: getRoutes(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   // While waiting for the data, show a loading indicator
