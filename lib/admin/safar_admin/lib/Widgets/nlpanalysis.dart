@@ -107,8 +107,8 @@ class HuggingFaceStreamNlpWidget extends StatelessWidget {
                     analysisSnapshot.data == null) {
                   return Card(
                     elevation: 4,
-                    margin:
-                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 4.0),
                     child: Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Text("Error analyzing feedback."),

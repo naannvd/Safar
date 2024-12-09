@@ -6,6 +6,8 @@ import 'package:safar/Screens/welcome_screen.dart';
 import 'package:safar/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:safar/consts.dart';
 // import 'package:flutter_stripe/flutter_stripe.dart';
 
 // import 'package:safar/Profile/profile.dart';
@@ -15,6 +17,7 @@ import 'package:google_fonts/google_fonts.dart';
 final font = GoogleFonts.montserrat();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = stripePublishableKey;
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

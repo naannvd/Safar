@@ -9,7 +9,7 @@ import 'package:safar/Widgets/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 // import 'package:safar/private/bus_driver/driver_dashboard.dart';
 // import 'package:safar/private/child/child_dashboard.dart';
-// import 'package:safar/private/parent/parent_dashboard.dart';
+// import 'package:safar/private/parent/dashboard.dart';
 // import 'package:safar/Widgets/starting_page.dart';
 
 class LandingPage extends StatelessWidget {

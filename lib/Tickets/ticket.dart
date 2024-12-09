@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:safar/Payment/services/stripe_service.dart';
 import 'package:safar/Tickets/complete_button.dart';
 // import 'package:safar/Tickets/feedback_button.dart';
 import 'package:safar/Tickets/qr_generate.dart';
@@ -445,8 +446,7 @@ class TicketCard extends StatelessWidget {
                   ),
                 ),
               ),
-              CompleteButton(ticketData: ticketData),
-              // const FeedbackButton(),
+              CompleteButton(ticketData: ticketData), // const FeedbackButton(),
             ],
           );
         },

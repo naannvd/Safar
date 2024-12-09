@@ -5,6 +5,7 @@ import 'package:safar/private/parent/parent_functionality/add_child.dart';
 import 'package:safar/private/parent/parent_functionality/child_list.dart';
 import 'package:safar/private/parent/daily_trip.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:safar/private/parent/set_location.dart';
 
 class ParentDashboard extends StatefulWidget {
   const ParentDashboard({super.key});
@@ -44,9 +45,6 @@ class _ParentDashboardState extends State<ParentDashboard> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // const SizedBox(
-            //   height: 200,
-            // ),
             ElevatedButton(
               child: const Text("Add Child"),
               onPressed: () {
@@ -60,10 +58,20 @@ class _ParentDashboardState extends State<ParentDashboard> {
               },
             ),
             const SizedBox(height: 20),
+            ElevatedButton(
+              child: const Text("Set Location"),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SetLocationScreen(parentId: parentId),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 20),
             Container(
               height: 320,
-              // width: double.infinity,
-              // decoration: BoxDecoration(color: Colors.grey[200]),
               child: const DailyTrip(),
             ),
             const SizedBox(height: 20),
@@ -80,8 +88,6 @@ class _ParentDashboardState extends State<ParentDashboard> {
             ),
             Container(
               height: 320,
-              // width: double.infinity,
-              // decoration: BoxDecoration(color: Colors.grey[200]),
               child: ChildList(parentId: parentId),
             ),
           ],
