@@ -23,9 +23,16 @@ class FeedbackScreen extends StatelessWidget {
 
   Future<Map<String, dynamic>> analyzeFeedbackWithHuggingFace(
       String text) async {
+<<<<<<< HEAD
     const apiKey = "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";
     const apiUrl =
         "https://api-inference.huggingface.co/models/cardiffnlp/twitter-roberta-base-sentiment-latest";
+=======
+    const apiKey =
+        "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"; // Replace with your Hugging Face API token
+    const apiUrl =
+        "https://api-inference.huggingface.co/models/distilbert-base-uncased-finetuned-sst-2-english";
+>>>>>>> 35e4a5838ee0d8e2109d4bd483c51fba98531cf0
 
     try {
       final response = await http.post(
@@ -41,7 +48,11 @@ class FeedbackScreen extends StatelessWidget {
         final decodedResponse = json.decode(response.body) as List<dynamic>;
         print("API Response: $decodedResponse");
 
+<<<<<<< HEAD
         if (decodedResponse.isNotEmpty) {
+=======
+        if (decodedResponse.isNotEmpty && decodedResponse[0] is List<dynamic>) {
+>>>>>>> 35e4a5838ee0d8e2109d4bd483c51fba98531cf0
           final predictions = decodedResponse[0] as List<dynamic>;
           final bestPrediction = predictions.reduce((a, b) =>
               (a['score'] as double) > (b['score'] as double) ? a : b);
@@ -138,6 +149,7 @@ class FeedbackScreen extends StatelessWidget {
                       ((analysis["score"] ?? 0.0) * 100).toStringAsFixed(2);
 
                   // Determine sentiment label color
+<<<<<<< HEAD
                   Color sentimentColor;
                   if (sentiment == "POSITIVE") {
                     sentimentColor = Colors.green;
@@ -146,6 +158,13 @@ class FeedbackScreen extends StatelessWidget {
                   } else {
                     sentimentColor = Colors.yellow[700]!;
                   }
+=======
+                  final sentimentColor = sentiment == "POSITIVE"
+                      ? Colors.green
+                      : sentiment == "NEGATIVE"
+                          ? Colors.red
+                          : Colors.orange;
+>>>>>>> 35e4a5838ee0d8e2109d4bd483c51fba98531cf0
 
                   return Card(
                     color: Colors.white,
@@ -157,6 +176,10 @@ class FeedbackScreen extends StatelessWidget {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+<<<<<<< HEAD
+=======
+                          // Feedback details
+>>>>>>> 35e4a5838ee0d8e2109d4bd483c51fba98531cf0
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,7 +189,11 @@ class FeedbackScreen extends StatelessWidget {
                                   style: GoogleFonts.montserrat(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
+<<<<<<< HEAD
                                     color: const Color(0xFF042F40),
+=======
+                                    color: Color(0xFF042F40),
+>>>>>>> 35e4a5838ee0d8e2109d4bd483c51fba98531cf0
                                   ),
                                 ),
                                 const SizedBox(height: 8),
@@ -187,6 +214,10 @@ class FeedbackScreen extends StatelessWidget {
                               ],
                             ),
                           ),
+<<<<<<< HEAD
+=======
+                          // Sentiment and confidence labels
+>>>>>>> 35e4a5838ee0d8e2109d4bd483c51fba98531cf0
                           Column(
                             children: [
                               Container(
