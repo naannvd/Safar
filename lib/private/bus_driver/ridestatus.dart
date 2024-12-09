@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safar/private/bus_driver/driver_functionality/mark_attendance.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:safar/private/bus_driver/driver_functionality/present_students.dart';
+import 'package:safar/private/bus_driver/full_map.dart';
 
 class RideStatusScreen extends StatefulWidget {
   final String rideId;
@@ -34,26 +34,47 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
             ),
             const SizedBox(height: 20),
 
-            // Placeholder for Map
-            // Container(
-            //   height: 200,
-            //   width: double.infinity,
-            //   color: Colors.grey[300],
-            //   child: const Center(
-            //     child: Text(
-            //       "Map Placeholder",
-            //       style: TextStyle(fontSize: 16, color: Colors.black54),
-            //     ),
-            //   ),
-            // ),
+            // "View Full Map" Button
+            ElevatedButton(
+              onPressed: () {
+                // Navigate to the FullMapScreen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FullMapScreen(rideId: widget.rideId),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF042F42),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                'View Full Map',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+
             const SizedBox(height: 20),
-            // ignore: avoid_unnecessary_containers
+
+            // Present Students List
             Expanded(
               child: PresentStudents(
                 rideId: widget.rideId,
               ),
             ),
+
             const SizedBox(height: 20),
+
+            // Attendance QR Scanner
             const AttendanceQRScanner(),
           ],
         ),

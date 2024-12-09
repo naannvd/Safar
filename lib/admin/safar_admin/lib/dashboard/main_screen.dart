@@ -7,6 +7,7 @@ import 'package:safar_admin/Widgets/reports.dart';
 import 'package:safar_admin/Widgets/settings.dart';
 import 'package:safar_admin/Widgets/trip.dart';
 import 'package:safar_admin/Widgets/user.dart';
+import 'package:safar_admin/dashboard/login_screen.dart';
 import 'package:safar_admin/dashboard/sidebar.dart';
 
 class AdminDashboard extends StatefulWidget {
@@ -18,8 +19,6 @@ class AdminDashboard extends StatefulWidget {
 
 class _AdminDashboardState extends State<AdminDashboard> {
   int selectedIndex = 0;
-
-  // List of tab titles
   final List<String> tabs = [
     'Dashboard',
     'Routes',
@@ -29,21 +28,28 @@ class _AdminDashboardState extends State<AdminDashboard> {
     'Inbox',
     'Feedback',
     'Reports',
-    'Settings'
+    'Settings',
+    'Logout'
   ];
-
-  // List of corresponding screens for each tab
   final List<Widget> screens = [
     const DashboardScreen(),
     const TripScreen(),
     const UserScreen(),
     const TripScreen(),
-    const NotificationsScreen(),
+    const TicketsScreen(),
     const InboxScreen(),
     const FeedbackScreen(),
     const ReportsScreen(),
     const SettingsScreen(),
+    const LoginScreen(),
   ];
+
+  void logout(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,15 +63,18 @@ class _AdminDashboardState extends State<AdminDashboard> {
             tabs: tabs,
             onTabSelected: (index) {
               setState(() {
-                selectedIndex = index;
+                if (index == tabs.length - 1) {
+                  logout(context);
+                } else {
+                  selectedIndex = index;
+                }
               });
             },
           ),
-          // Main Content dynamically updates based on the selected tab
           Expanded(
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
-              child: screens[selectedIndex], // Display the selected screen
+              child: screens[selectedIndex],
             ),
           ),
         ],

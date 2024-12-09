@@ -8,16 +8,23 @@ class ReportsScreen extends StatefulWidget {
   const ReportsScreen({super.key});
 
   @override
-  _ReportsScreenState createState() => _ReportsScreenState();
+  State<ReportsScreen> createState() => _ReportsScreenState();
 }
 
 class _ReportsScreenState extends State<ReportsScreen> {
   int positiveCount = 0;
   int negativeCount = 0;
+  int neutralCount = 0;
   Map<String, int> categoryCounts = {};
   List<String> keyPhrases = [];
 
-  Future<void> fetchFeedbacksAndAnalyze() async {
+  @override
+  void initState() {
+    super.initState();
+    fetchAndAnalyzeFeedbacks();
+  }
+
+  Future<void> fetchAndAnalyzeFeedbacks() async {
     try {
       final feedbackSnapshot = await FirebaseFirestore.instance
           .collection('feedback')
@@ -26,8 +33,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
 
       final feedbacks = feedbackSnapshot.docs.map((doc) => doc.data()).toList();
 
-      int posCount = 0;
-      int negCount = 0;
+      int posCount = 0, negCount = 0, neuCount = 0;
       Map<String, int> categories = {};
       List<String> phrases = [];
 
@@ -35,30 +41,34 @@ class _ReportsScreenState extends State<ReportsScreen> {
         final feedbackText = feedback['message'] ?? '';
 
         // Sentiment Analysis
-        final sentimentResult =
-            await analyzeFeedbackWithHuggingFace(feedbackText, sentiment: true);
-        if (sentimentResult['label'] == 'POSITIVE') {
+        final sentimentResult = await analyzeFeedbackWithHuggingFace(
+            feedbackText,
+            analysisType: 'sentiment');
+        if (sentimentResult['label'] == 'positive') {
           posCount++;
-        } else if (sentimentResult['label'] == 'NEGATIVE') {
+        } else if (sentimentResult['label'] == 'negative') {
           negCount++;
+        } else if (sentimentResult['label'] == 'neutral') {
+          neuCount++;
         }
 
         // Text Categorization
         final categoryResult = await analyzeFeedbackWithHuggingFace(
             feedbackText,
-            categorize: true);
+            analysisType: 'categorization');
         final category = categoryResult['category'] ?? 'Uncategorized';
         categories[category] = (categories[category] ?? 0) + 1;
 
         // Key Phrase Extraction
         final phrasesResult = await analyzeFeedbackWithHuggingFace(feedbackText,
-            extractPhrases: true);
+            analysisType: 'key_phrases');
         phrases.addAll(phrasesResult['keyPhrases'] ?? []);
       }
 
       setState(() {
         positiveCount = posCount;
         negativeCount = negCount;
+        neutralCount = neuCount;
         categoryCounts = categories;
         keyPhrases = phrases;
       });
@@ -69,33 +79,31 @@ class _ReportsScreenState extends State<ReportsScreen> {
 
   Future<Map<String, dynamic>> analyzeFeedbackWithHuggingFace(
     String text, {
-    bool sentiment = false,
-    bool categorize = false,
-    bool extractPhrases = false,
+    required String analysisType,
   }) async {
     const apiKey = "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";
 
     String apiUrl;
     dynamic body;
 
-    if (sentiment) {
+    if (analysisType == 'sentiment') {
       apiUrl =
-          "https://api-inference.huggingface.co/models/distilbert-base-uncased-finetuned-sst-2-english";
+          "https://api-inference.huggingface.co/models/cardiffnlp/twitter-roberta-base-sentiment-latest";
       body = {"inputs": text};
-    } else if (categorize) {
+    } else if (analysisType == 'categorization') {
       apiUrl =
           "https://api-inference.huggingface.co/models/facebook/bart-large-mnli";
       body = {
         "inputs": text,
         "parameters": {
           "candidate_labels": [
-            "Customer Support",
+            "Complaint",
             "Product Feedback",
-            "Complaint"
+            "Customer Support"
           ]
         }
       };
-    } else if (extractPhrases) {
+    } else if (analysisType == 'key_phrases') {
       apiUrl =
           "https://api-inference.huggingface.co/models/dslim/bert-base-NER";
       body = {"inputs": text};
@@ -116,13 +124,13 @@ class _ReportsScreenState extends State<ReportsScreen> {
       if (response.statusCode == 200) {
         final decodedResponse = json.decode(response.body);
 
-        if (sentiment) {
+        if (analysisType == 'sentiment') {
           return decodedResponse[0];
-        } else if (categorize) {
-          final label = decodedResponse['labels'][0]; // Top category
-          final score = decodedResponse['scores'][0]; // Confidence score
+        } else if (analysisType == 'categorization') {
+          final label = decodedResponse['labels'][0];
+          final score = decodedResponse['scores'][0];
           return {'category': label, 'score': score};
-        } else if (extractPhrases) {
+        } else if (analysisType == 'key_phrases') {
           final entities = decodedResponse['entities'];
           final phrases = entities.map((e) => e['word']).toList();
           return {'keyPhrases': phrases};
@@ -135,12 +143,6 @@ class _ReportsScreenState extends State<ReportsScreen> {
     }
 
     return {};
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    fetchFeedbacksAndAnalyze();
   }
 
   @override
@@ -157,7 +159,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Pie Chart for Sentiment Analysis
+            // Pie Chart
             SizedBox(
               height: 300,
               child: PieChart(
@@ -175,6 +177,12 @@ class _ReportsScreenState extends State<ReportsScreen> {
                       color: Colors.red,
                       radius: 50,
                     ),
+                    PieChartSectionData(
+                      value: neutralCount.toDouble(),
+                      title: 'Neutral',
+                      color: Colors.yellow,
+                      radius: 50,
+                    ),
                   ],
                   centerSpaceRadius: 40,
                   sectionsSpace: 2,
@@ -182,7 +190,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            // Display Key Phrases
+            // Key Phrases
             Card(
               margin: const EdgeInsets.all(16),
               child: Padding(
@@ -197,14 +205,16 @@ class _ReportsScreenState extends State<ReportsScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      keyPhrases.join(', '),
+                      keyPhrases.isNotEmpty
+                          ? keyPhrases.join(', ')
+                          : 'No key phrases available',
                       style: const TextStyle(fontSize: 14),
                     ),
                   ],
                 ),
               ),
             ),
-            // Display Text Categorization
+            // Text Categorization
             Card(
               margin: const EdgeInsets.all(16),
               child: Padding(

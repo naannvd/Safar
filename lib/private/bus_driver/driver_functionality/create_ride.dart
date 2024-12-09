@@ -30,7 +30,7 @@ class RideStart extends StatelessWidget {
           .doc(user.uid)
           .get();
       if (doc.exists) {
-        return doc.data()?['fullName'] ?? "No name found";
+        return doc.data()?['driver_name'] ?? "No name found";
       } else {
         return "Driver not found";
       }
@@ -43,6 +43,27 @@ class RideStart extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       return "Driver not logged in";
+    }
+
+    Future<String> fetchDriverName() async {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        return "Driver not logged in";
+      }
+
+      try {
+        final doc = await FirebaseFirestore.instance
+            .collection('drivers')
+            .doc(user.uid)
+            .get();
+        if (doc.exists) {
+          return doc.data()?['name'] ?? "No name found";
+        } else {
+          return "Driver not found";
+        }
+      } catch (e) {
+        return "Error fetching driver name: $e";
+      }
     }
 
     String driverId = user.uid;

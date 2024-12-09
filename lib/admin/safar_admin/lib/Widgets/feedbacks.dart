@@ -23,10 +23,9 @@ class FeedbackScreen extends StatelessWidget {
 
   Future<Map<String, dynamic>> analyzeFeedbackWithHuggingFace(
       String text) async {
-    const apiKey =
-        "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"; // Replace with your Hugging Face API token
+    const apiKey = "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";
     const apiUrl =
-        "https://api-inference.huggingface.co/models/distilbert-base-uncased-finetuned-sst-2-english";
+        "https://api-inference.huggingface.co/models/cardiffnlp/twitter-roberta-base-sentiment-latest";
 
     try {
       final response = await http.post(
@@ -39,19 +38,28 @@ class FeedbackScreen extends StatelessWidget {
       );
 
       if (response.statusCode == 200) {
-        final decodedResponse = json.decode(response.body) as List<dynamic>;
+        // Decode the response
+        final decodedResponse = json.decode(response.body);
+
         print("API Response: $decodedResponse");
 
-        if (decodedResponse.isNotEmpty && decodedResponse[0] is List<dynamic>) {
+        // Ensure the response is in the expected structure
+        if (decodedResponse is List && decodedResponse.isNotEmpty) {
+          // Extract predictions (assumes the first item is relevant)
           final predictions = decodedResponse[0] as List<dynamic>;
-          final bestPrediction = predictions.reduce((a, b) =>
-              (a['score'] as double) > (b['score'] as double) ? a : b);
+          if (predictions.isNotEmpty) {
+            final bestPrediction = predictions.reduce((a, b) =>
+                (a['score'] as double) > (b['score'] as double) ? a : b);
 
-          return {
-            "label": bestPrediction['label'],
-            "score": bestPrediction['score'],
-          };
+            // Return the label and score
+            return {
+              "label": bestPrediction['label'] as String,
+              "score": bestPrediction['score'] as double,
+            };
+          }
         }
+
+        // Fallback if structure is unexpected
         return {"label": "Unknown", "score": 0.0};
       } else {
         print("Error from Hugging Face API: ${response.body}");
@@ -139,11 +147,14 @@ class FeedbackScreen extends StatelessWidget {
                       ((analysis["score"] ?? 0.0) * 100).toStringAsFixed(2);
 
                   // Determine sentiment label color
-                  final sentimentColor = sentiment == "POSITIVE"
-                      ? Colors.green
-                      : sentiment == "NEGATIVE"
-                          ? Colors.red
-                          : Colors.orange;
+                  Color sentimentColor;
+                  if (sentiment.toUpperCase() == "POSITIVE") {
+                    sentimentColor = Colors.green;
+                  } else if (sentiment.toUpperCase() == "NEGATIVE") {
+                    sentimentColor = Colors.red;
+                  } else {
+                    sentimentColor = Colors.yellow[700]!;
+                  }
 
                   return Card(
                     color: Colors.white,
@@ -155,7 +166,6 @@ class FeedbackScreen extends StatelessWidget {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Feedback details
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,7 +175,7 @@ class FeedbackScreen extends StatelessWidget {
                                   style: GoogleFonts.montserrat(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
-                                    color: Color(0xFF042F40),
+                                    color: const Color(0xFF042F40),
                                   ),
                                 ),
                                 const SizedBox(height: 8),
@@ -186,7 +196,6 @@ class FeedbackScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          // Sentiment and confidence labels
                           Column(
                             children: [
                               Container(

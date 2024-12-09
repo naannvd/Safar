@@ -61,6 +61,8 @@ dependencies:
   custom_rating_bar: ^3.0.0
   quickalert: ^1.1.0
   tap_to_expand: ^0.7.2
+  http: ^1.2.2
+  location: ^7.0.1
 
 dev_dependencies:
   flutter_test:
