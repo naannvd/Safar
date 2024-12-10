@@ -1,135 +1,196 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class PresentStudents extends StatelessWidget {
+class PresentStudents extends StatefulWidget {
   final String rideId;
 
   const PresentStudents({super.key, required this.rideId});
 
   @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('rides')
-          .where('ride_id', isEqualTo: rideId)
-          .snapshots(),
-      builder: (context, snapshot) {
-        try {
-          // print("RideStudentsList: Checking stream for ride_id = $rideId");
+  _PresentStudentsState createState() => _PresentStudentsState();
+}
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            // print("RideStudentsList: Stream is loading...");
+class _PresentStudentsState extends State<PresentStudents> {
+  String? championStudentId;
+
+  Future<void> assignChampion(String studentId) async {
+    try {
+      QuerySnapshot rideSnapshot = await FirebaseFirestore.instance
+          .collection('rides')
+          .where('ride_id', isEqualTo: widget.rideId)
+          .get();
+
+      if (rideSnapshot.docs.isNotEmpty) {
+        final rideDocRef = rideSnapshot.docs.first.reference;
+
+        if (championStudentId != null) {
+          await FirebaseFirestore.instance
+              .collection('childs')
+              .doc(championStudentId)
+              .update({'is_champion': false});
+        }
+
+        await FirebaseFirestore.instance
+            .collection('childs')
+            .doc(studentId)
+            .update({'is_champion': true});
+
+        await rideDocRef.update({'champion_student': studentId});
+
+        setState(() {
+          championStudentId = studentId;
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error assigning champion: $e')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.grey.shade200,
+      child: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('rides')
+            .where('ride_id', isEqualTo: widget.rideId)
+            .snapshots(),
+        builder: (context, rideSnapshot) {
+          if (rideSnapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (snapshot.hasError) {
-            // print("RideStudentsList: Error in stream: ${snapshot.error}");
-            throw Exception("Error fetching ride data: ${snapshot.error}");
-          }
-
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            // print("RideStudentsList: No ride found for ride_id = $rideId");
+          if (!rideSnapshot.hasData || rideSnapshot.data!.docs.isEmpty) {
             return const Center(
               child: Text("No ride data found for this Ride ID."),
             );
           }
 
-          // Get the first document that matches the ride ID
           final rideData =
-              snapshot.data!.docs.first.data() as Map<String, dynamic>;
-          // print("RideStudentsList: Ride data fetched: $rideData");
-
+              rideSnapshot.data!.docs.first.data() as Map<String, dynamic>;
           final List<dynamic> studentIds = rideData['students'] ?? [];
-          // print("RideStudentsList: Students array: $studentIds");
 
           if (studentIds.isEmpty) {
-            // print("RideStudentsList: No students found in the ride.");
             return const Center(
               child: Text("No students found for this ride."),
             );
           }
 
-          // Fetch the details of each student in the students array
-          return Container(
-            padding: const EdgeInsets.all(16.0),
-            child: ListView.builder(
-              itemCount: studentIds.length,
-              itemBuilder: (context, index) {
-                String studentId = studentIds[index];
-                // print(
-                //     "RideStudentsList: Fetching data for student_id = $studentId");
+          return ListView.builder(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            itemCount: studentIds.length,
+            itemBuilder: (context, index) {
+              final studentId = studentIds[index];
 
-                return StreamBuilder<DocumentSnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('childs')
-                      .doc(studentId)
-                      .snapshots(),
-                  builder: (context, studentSnapshot) {
-                    try {
-                      if (studentSnapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        // print(
-                        //     "StudentStream: Loading data for student_id = $studentId");
-                        return const ListTile(
-                          title: Text("Loading student details..."),
-                        );
-                      }
+              return StreamBuilder<DocumentSnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('childs')
+                    .doc(studentId)
+                    .snapshots(),
+                builder: (context, studentSnapshot) {
+                  if (studentSnapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const ListTile(
+                      title: Text("Loading student details..."),
+                    );
+                  }
 
-                      if (studentSnapshot.hasError) {
-                        // print(
-                        //     "StudentStream: Error fetching student_id = $studentId, ${studentSnapshot.error}");
-                        throw Exception(
-                            "Error fetching student data: ${studentSnapshot.error}");
-                      }
+                  if (!studentSnapshot.hasData ||
+                      !studentSnapshot.data!.exists) {
+                    return ListTile(
+                      title: Text("Student not found: $studentId"),
+                    );
+                  }
 
-                      if (!studentSnapshot.hasData ||
-                          !studentSnapshot.data!.exists) {
-                        // print(
-                        //     "StudentStream: Student not found for student_id = $studentId");
-                        return ListTile(
-                          title: Text("Student not found: $studentId"),
-                        );
-                      }
+                  final studentData =
+                      studentSnapshot.data!.data() as Map<String, dynamic>;
+                  final isChampion = studentData['is_champion'] ?? false;
+                  final isBoarded = studentData['is_boarded'] ?? false;
 
-                      final studentData =
-                          studentSnapshot.data!.data() as Map<String, dynamic>;
-                      // print(
-                      //     "StudentStream: Data for student_id = $studentId: $studentData");
-
-                      return Card(
-                        child: ListTile(
-                          title: Text(
-                              studentData['child_name'] ?? "Unnamed Student"),
-                          subtitle: Text("ID: $studentId"),
-                          trailing: studentData['is_present'] == true
-                              ? const Icon(Icons.check_circle,
-                                  color: Colors.green)
-                              : const Icon(Icons.cancel, color: Colors.red),
-                        ),
-                      );
-                    } catch (e) {
-                      // print(
-                      //     "StudentStream: Error processing student_id = $studentId, $e");
-                      return const ListTile(
-                        title: Text("Error processing student data."),
-                      );
-                    }
-                  },
-                );
-              },
-            ),
+                  return Card(
+                    color: const Color(0xFFA1CA73),
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 16,
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Name
+                                Text(
+                                  studentData['child_name'] ??
+                                      "Unnamed Student",
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF042F40),
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                // Boarded/Not Boarded
+                                Text(
+                                  isBoarded ? "Boarded" : "Not Boarded",
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF042F40),
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                // ID
+                                Text(
+                                  "ID: $studentId",
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF042F40),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // Assign Champion Button
+                          ElevatedButton(
+                            onPressed: isChampion
+                                ? null
+                                : () => assignChampion(studentId),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: isChampion
+                                  ? Colors.red
+                                  : const Color(0xFF042F40),
+                              textStyle: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            child: Text(
+                              isChampion ? "Champion" : "Assign Champion",
+                              style: GoogleFonts.montserrat(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
           );
-        } catch (e) {
-          // print("RideStudentsList: General error: $e");
-          return Container(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              "An error occurred: $e",
-              style: const TextStyle(color: Colors.red),
-            ),
-          );
-        }
-      },
+        },
+      ),
     );
   }
 }

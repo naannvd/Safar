@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:safar/private/Private_Dashboards/schoolauth_dashboard.dart';
 import 'package:safar/Login/forgot_password.dart';
 import 'package:safar/Widgets/custom_scaffold.dart';
 import 'package:safar/private/bus_driver/driver_dashboard.dart';
@@ -52,8 +51,6 @@ class _PrivateLoginScreenState extends State<PrivateLoginScreen> {
             dashboard = const ParentDashboard();
           } else if (_selectedUserType == 'Child') {
             dashboard = const ChildDashboard();
-          } else if (_selectedUserType == 'School Authority') {
-            dashboard = const SchoolAuthDashboardScreen();
           } else {
             dashboard = const DriverDashboard();
           }
