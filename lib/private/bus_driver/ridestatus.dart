@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safar/private/bus_driver/driver_functionality/finish_ride.dart';
 import 'package:safar/private/bus_driver/driver_functionality/mark_attendance.dart';
 import 'package:safar/private/bus_driver/driver_functionality/present_students.dart';
 import 'package:safar/private/bus_driver/full_map.dart';
@@ -16,10 +17,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Ride Status'),
-        backgroundColor: const Color(0xFF042F42),
-      ),
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -76,6 +74,12 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
 
             // Attendance QR Scanner
             const AttendanceQRScanner(),
+
+            const SizedBox(height: 20),
+
+            // Finish Ride Button
+            FinishRideButton(
+                rideId: widget.rideId), // Correctly passing the rideId
           ],
         ),
       ),

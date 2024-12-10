@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:safar/Private_Side/private_login.dart';
+import 'package:safar/private/Private_Logins/private_login.dart';
 import 'package:safar/widgets/custom_scaffold.dart';
 
 class PrivateSignUpScreen extends StatefulWidget {

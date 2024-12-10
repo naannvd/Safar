@@ -2,12 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:safar/Private_Side/Private_Dashboards/child_dashboard.dart';
-import 'package:safar/Private_Side/Private_Dashboards/driver_dashboard.dart';
-import 'package:safar/Private_Side/Private_Dashboards/parent_dashboard.dart';
-import 'package:safar/Private_Side/Private_Dashboards/schoolauth_dashboard.dart';
 import 'package:safar/Login/forgot_password.dart';
 import 'package:safar/Widgets/custom_scaffold.dart';
+import 'package:safar/private/bus_driver/driver_dashboard.dart';
+import 'package:safar/private/child/child_dashboard.dart';
+import 'package:safar/private/parent/parent_dashboard.dart';
 
 class PrivateLoginScreen extends StatefulWidget {
   const PrivateLoginScreen({super.key});
@@ -46,13 +45,11 @@ class _PrivateLoginScreenState extends State<PrivateLoginScreen> {
           // Navigate to the respective dashboard
           Widget dashboard;
           if (_selectedUserType == 'Parent') {
-            dashboard = const ParentDashboardScreen();
+            dashboard = const ParentDashboard();
           } else if (_selectedUserType == 'Child') {
-            dashboard = const ChildDashboardScreen();
-          } else if (_selectedUserType == 'School Authority') {
-            dashboard = const SchoolAuthDashboardScreen();
+            dashboard = const ChildDashboard();
           } else {
-            dashboard = const DriverDashboardScreen();
+            dashboard = const DriverDashboard();
           }
 
           Navigator.pushReplacement(

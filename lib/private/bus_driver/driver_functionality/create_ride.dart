@@ -57,7 +57,7 @@ class RideStart extends StatelessWidget {
             .doc(user.uid)
             .get();
         if (doc.exists) {
-          return doc.data()?['name'] ?? "No name found";
+          return doc.data()?['driver_name'] ?? "No name found";
         } else {
           return "Driver not found";
         }
@@ -103,14 +103,22 @@ class RideStart extends StatelessWidget {
           ),
         );
       },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFFA1CA73),
-        padding: const EdgeInsets.symmetric(vertical: 20),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(
+          const Color(0xFFA1CA73), // Background color
+        ),
+        padding: MaterialStateProperty.all<EdgeInsets>(
+          const EdgeInsets.symmetric(vertical: 20), // Padding
+        ),
       ),
-      child: Text(
+      child: const Text(
         "Create Ride",
-        style:
-            GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.w600),
+        style: TextStyle(
+          fontWeight: FontWeight.bold, // Bold font
+          fontSize: 22, // Font size
+          fontFamily: 'Montserrat', // Font family
+          color: Color(0xFF042F40), // Text color
+        ),
       ),
     );
   }
