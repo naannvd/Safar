@@ -1,39 +1,24 @@
+// PaymentHelper.dart (example)
 import 'package:flutter/material.dart';
 import 'package:safar/Payment/services/stripe_service.dart';
-import 'package:safar/Tickets/ticket.dart';
+// Import the TicketCard widget (adjust the path as needed)
+// import 'package:safar/tickets/ticket_card.dart';
 
-class PaymentScreen extends StatelessWidget {
-  final VoidCallback onPaymentSuccess;
+class PaymentHelper {
+  static Future<bool> openStripePaymentView(
+      BuildContext context, int amount) async {
+    try {
+      await StripeService.instance.makePayment(amount: amount);
+      // If payment is successful, navigate to the TicketCard screen or simply return true.
+      // Remove the navigation to TicketCard here if you only want to create the ticket after payment.
 
-  const PaymentScreen({super.key, required this.onPaymentSuccess});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Stripe Payment"),
-      ),
-      body: Center(
-        child: MaterialButton(
-          onPressed: () async {
-            try {
-              await StripeService.instance.makePayment(amount: 5000);
-              // If payment is successful, invoke the callback
-              onPaymentSuccess();
-            } catch (e) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Payment failed: $e')),
-              );
-            }
-          },
-          color: Colors.green,
-          child: const Text(
-            "Make Payment",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-      ),
-    );
+      // Payment successful
+      return true;
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Payment failed: $e')),
+      );
+      return false;
+    }
   }
 }

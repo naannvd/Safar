@@ -76,7 +76,7 @@ class _RoundedNavBarState extends State<RoundedNavBar> {
       ),
       padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.only(
-          bottom: 30, left: 20, right: 20), // Adjust for symmetry
+          bottom: 20, left: 20, right: 20), // Adjust for symmetry
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: navItems.map((item) {

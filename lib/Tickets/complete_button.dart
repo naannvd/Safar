@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:custom_rating_bar/custom_rating_bar.dart';
+import 'package:safar/Dashboard/landing_page.dart';
 import 'package:safar/Payment/pages/home_page.dart';
 import 'package:safar/Tickets/ticket.dart';
 import 'package:safar/Tickets/ticket_book.dart';
@@ -14,20 +16,10 @@ class CompleteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        _completeTicket(context);
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => PaymentScreen(
-              onPaymentSuccess: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const TicketCard(),
-                  ),
-                );
-              },
-            ),
-          ),
+          MaterialPageRoute(builder: (context) => const LandingPage()),
         );
       },
       child: Container(
@@ -81,7 +73,9 @@ class CompleteButton extends StatelessWidget {
                   context,
                   MaterialPageRoute(builder: (context) => const TicketBook()),
                 );
-                _completeTicket(context, rating);
+                _completeTicket(
+                  context,
+                );
               },
               child: Text(
                 'Submit',
@@ -95,7 +89,7 @@ class CompleteButton extends StatelessWidget {
     );
   }
 
-  Future<void> _completeTicket(BuildContext context, double rating) async {
+  Future<void> _completeTicket(BuildContext context) async {
     try {
       final ticketId = ticketData['ticketId'];
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
@@ -108,7 +102,7 @@ class CompleteButton extends StatelessWidget {
         DocumentReference ticketDocRef = querySnapshot.docs.first.reference;
         await ticketDocRef.update({
           'status': 'completed',
-          'rating': rating,
+          // 'rating': rating,
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -122,6 +116,28 @@ class CompleteButton extends StatelessWidget {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error completing ticket: $e')),
+      );
+    }
+    try {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+
+      if (userId != null) {
+        final userDocRef =
+            FirebaseFirestore.instance.collection('users').doc(userId);
+        await userDocRef.update({
+          'loyalty_points': FieldValue.increment(30),
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Loyalty points updated!')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Error: User not logged in!')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error updating loyalty points: $e')),
       );
     }
   }

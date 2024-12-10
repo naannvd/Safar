@@ -14,7 +14,7 @@ class StationDropDown extends StatefulWidget {
   final String selectedLine;
 
   @override
-  _StationDropDownState createState() => _StationDropDownState();
+  State<StationDropDown> createState() => _StationDropDownState();
 }
 
 class _StationDropDownState extends State<StationDropDown> {
@@ -114,6 +114,7 @@ class _StationDropDownState extends State<StationDropDown> {
   void _showDropdown() {
     DropDownState(
       DropDown(
+        dropDownBackgroundColor: Colors.white,
         bottomSheetTitle: const Padding(
           padding: EdgeInsets.all(8.0),
           child: Text(
@@ -129,6 +130,7 @@ class _StationDropDownState extends State<StationDropDown> {
                   selectedList[0].name; // Update the selected station
             });
             widget.onStationSelected(_selectedStation!);
+            _stationItems.removeWhere((item) => item.name == _selectedStation);
           }
         },
       ),
