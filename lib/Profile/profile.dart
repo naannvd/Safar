@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:safar/Profile/Loyalty/loyalty_dashboard.dart';
-import 'package:safar/Profile/QrScanner/scanner_with_window.dart';
-import 'package:safar/Profile/SupportChat/chat.dart';
+import 'package:safar/Profile/Feedback/feedback.dart';
+import 'package:safar/Profile/Loyalty/loyalty.dart';
+import 'package:safar/Profile/Saved%20Routes/prev_routes.dart';
 import 'package:safar/Profile/profile_edit.dart';
 import 'package:safar/Screens/welcome_screen.dart';
 import 'package:safar/Widgets/bottom_nav_bar.dart';
@@ -188,27 +188,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             const Color(0xFF042F40),
                           ),
                           _buildProfileOption(
-                            Icons.chat_outlined,
-                            'Chat',
+                            Icons.feedback,
+                            'Feedback',
                             () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const ChatScreen()));
+                                          const FeedbackScreen()));
                             },
                             const Color(0xFF042F40),
                           ),
                           _buildProfileOption(
-                            Icons.qr_code_scanner,
-                            'Scanner',
+                            Icons.route,
+                            'Saved Routes',
                             () {
                               _checkPermissions();
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const BarcodeScannerWithScanWindow()));
+                                          const PrevRoutes()));
                             },
                             const Color(0xFF042F40),
                           ),

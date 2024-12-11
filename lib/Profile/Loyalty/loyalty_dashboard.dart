@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class LoyaltyDashboard extends StatelessWidget {
-  const LoyaltyDashboard({super.key});
+class Loyalty1Dashboard extends StatelessWidget {
+  const Loyalty1Dashboard({super.key});
 
   Future<Map<String, dynamic>> fetchUserData() async {
     final user = FirebaseAuth.instance.currentUser;

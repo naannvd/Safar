@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:safar/Dashboard/landing_page.dart';
+import 'package:safar/Payment/pages/home_page.dart';
 import 'package:safar/Tickets/save_route.dart';
 import 'package:safar/Tickets/station_drop_down.dart';
 import 'package:safar/Tickets/ticket.dart';
@@ -179,14 +180,6 @@ class _TicketBookState extends State<TicketBook> {
                 alignment: Alignment.center,
                 height: 40,
                 width: 200,
-                // decoration: BoxDecoration(
-                //   color: Colors.grey[300],
-                //   border: Border.all(
-                //     color: const Color.fromARGB(41, 4, 47, 64),
-                //     width: 2,
-                //   ),
-                //   borderRadius: BorderRadius.circular(20),
-                // ),
                 child: const Text(
                   'Select a line',
                   style: TextStyle(
@@ -248,49 +241,57 @@ class _TicketBookState extends State<TicketBook> {
                       );
                       return; // Exit if fare is not available
                     }
+                    // Fetch the userId
+                    String? receivedUserId = await getUserId();
+                    if (receivedUserId == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                              'User not logged in. Please log in to book a ticket.'),
+                        ),
+                      );
+                      return; // Exit if userId is null
+                    }
 
-                    try {
-                      // Fetch the userId
-                      String? receivedUserId = await getUserId();
+                    // Initiate Payment
+                    bool paymentSuccessful =
+                        await PaymentHelper.openStripePaymentView(
+                            context, fare!);
+
+                    if (paymentSuccessful) {
+                      // If payment is successful, then create the ticket
                       String ticketId =
                           TicketSupport().generateTicketId(_selectedLine!);
-                      print(ticketId);
-
-                      if (receivedUserId == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                                'User not logged in. Please log in to book a ticket.'),
-                          ),
-                        );
-                        return; // Exit if userId is null
-                      }
-
-                      // Create the ticket
-                      await TicketSupport().createTicket(
+                      try {
+                        await TicketSupport().createTicket(
                           userId: receivedUserId,
                           fromStation: _selectedStationFrom!,
                           toStation: _selectedStationTo!,
                           routeName: _selectedLine!,
                           fare: fare!,
                           timeToNext: 10,
-                          ticketId: ticketId);
+                          ticketId: ticketId,
+                        );
 
-                      // Navigate to TicketCard page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const TicketCard(
-                              // fromStation: _selectedStationFrom!,
-                              // toStation: _selectedStationTo!,
-                              ),
-                        ),
-                      );
-                    } catch (e) {
-                      print(e);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Error booking ticket: $e')),
-                      );
+                        // After ticket creation, reset station fields
+                        setState(() {
+                          _selectedStationFrom = null;
+                          _selectedStationTo = null;
+                        });
+
+                        // Navigate to TicketCard page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const TicketCard(),
+                          ),
+                        );
+                      } catch (e) {
+                        print(e);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Error booking ticket: $e')),
+                        );
+                      }
                     }
                   } else {
                     // Display an error message if any field is not selected

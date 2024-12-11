@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:safar/Tickets/complete_button.dart';
+import 'package:safar/Tickets/payment_button.dart';
 // import 'package:safar/Tickets/feedback_button.dart';
 import 'package:safar/Tickets/qr_generate.dart';
 // import 'package:safar/Tickets/ticket_book.dart';
@@ -143,6 +144,7 @@ class TicketCard extends StatelessWidget {
                   ? (ticketData['timeToNextStation'])
                   : 'Unknown Time');
           String fare = ticketData['fare']?.toString() ?? 'Unknown Fare';
+          String status = ticketData['status'] ?? 'Unknown Status';
 
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -377,7 +379,7 @@ class TicketCard extends StatelessWidget {
 
                             // const SizedBox(height: 4),
                             Text(
-                              'Ticket Status: CONFIRMED',
+                              'Ticket Status: ${status.toUpperCase()}',
                               style: GoogleFonts.montserrat(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
@@ -445,7 +447,8 @@ class TicketCard extends StatelessWidget {
                   ),
                 ),
               ),
-              CompleteButton(ticketData: ticketData), // const FeedbackButton(),
+              CompleteButton(ticketData: ticketData),
+              // const PaymentButton(),
             ],
           );
         },

@@ -16,7 +16,9 @@ class StripeService {
         amount,
         currency,
       );
-      if (paymentIntentClientSecret == null) return;
+      if (paymentIntentClientSecret == null) {
+        throw Exception("Failed to create payment intent");
+      }
 
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
@@ -24,9 +26,13 @@ class StripeService {
           merchantDisplayName: "Sayyed Areeb",
         ),
       );
+
       await _processPayment();
+
+      // If we reach here without exceptions, payment is completed successfully.
     } catch (e) {
-      print(e);
+      // Rethrow the exception so that the caller can detect the failure
+      rethrow;
     }
   }
 
@@ -35,7 +41,7 @@ class StripeService {
       final Dio dio = Dio();
       Map<String, dynamic> data = {
         "amount": _calculateAmount(amount),
-        "currency": currency, // Set currency to PKR
+        "currency": currency,
       };
       var response = await dio.post(
         "https://api.stripe.com/v1/payment_intents",
@@ -53,23 +59,26 @@ class StripeService {
       }
       return null;
     } catch (e) {
-      print(e);
+      print("Error creating payment intent: $e");
+      return null;
     }
-    return null;
   }
 
   Future<void> _processPayment() async {
     try {
+      // This call presents the payment sheet and will confirm payment upon success.
       await Stripe.instance.presentPaymentSheet();
-      await Stripe.instance.confirmPaymentSheetPayment();
+
+      // Do NOT call confirmPaymentSheetPayment() again.
+      // presentPaymentSheet() should handle the payment confirmation flow itself.
     } catch (e) {
-      print(e);
+      print("Error presenting payment sheet: $e");
+      rethrow; // rethrow the error so that the parent method can handle it
     }
   }
 
   String _calculateAmount(int amount) {
-    final calculatedAmount =
-        amount * 100; // Convert to paisas (cents equivalent in PKR)
+    final calculatedAmount = amount * 100; // Convert to smallest currency unit
     return calculatedAmount.toString();
   }
 }

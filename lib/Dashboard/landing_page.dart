@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:safar/Dashboard/PrevTickets/ticket_builder.dart';
 import 'package:safar/Dashboard/PrevTickets/ticket_list.dart';
+import 'package:safar/Dashboard/Saved%20Routes/route_list.dart';
 import 'package:safar/Dashboard/route_box.dart';
 // import 'package:safar/Tickets/ticket_book.dart';
 import 'package:safar/Widgets/bottom_nav_bar.dart';
@@ -109,7 +110,7 @@ class LandingPage extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 30,
             ),
             Container(
               margin: const EdgeInsets.only(left: 20),
@@ -125,6 +126,7 @@ class LandingPage extends StatelessWidget {
             Container(
               height: 130,
               decoration: BoxDecoration(color: Colors.grey[200]),
+              child: const SavedRoutesList(),
             )
           ],
         ),
