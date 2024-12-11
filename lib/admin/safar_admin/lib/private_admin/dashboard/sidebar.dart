@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:safar_admin/dashboard/sidebar_select.dart';
+import 'package:safar_admin/private_admin/dashboard/sidebar_select.dart';
 
 class Sidebar extends StatelessWidget {
   final int selectedIndex;
@@ -75,22 +75,10 @@ class Sidebar extends StatelessWidget {
       case 0:
         return Icons.dashboard;
       case 1:
-        return Icons.route;
-      case 2:
         return Icons.people;
-      case 3:
-        return Icons.directions_bus;
-      case 4:
-        return Icons.notifications;
-      case 5:
-        return Icons.inbox;
-      case 6:
-        return Icons.feedback;
-      case 7:
-        return Icons.bar_chart;
-      case 8:
+      case 2:
         return Icons.settings;
-      case 9:
+      case 3:
         return Icons.logout;
       default:
         return Icons.dashboard;

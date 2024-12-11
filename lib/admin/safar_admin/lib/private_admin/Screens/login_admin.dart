@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:safar_admin/dashboard/main_screen.dart';
-import 'package:safar_admin/Screens/signup_admin.dart';
+import 'package:safar_admin/public_admin/dashboard/main_screen.dart';
+import 'package:safar_admin/public_admin/Screens/signup_admin.dart';
 
 class AdminLoginPage extends StatelessWidget {
   const AdminLoginPage({super.key});

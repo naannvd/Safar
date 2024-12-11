@@ -36,8 +36,8 @@ class _PrivateLoginScreenState extends State<PrivateLoginScreen> {
 
         // Check user's role in Firestore
         DocumentSnapshot userDoc = await FirebaseFirestore.instance
-            .collection(_selectedUserType.toLowerCase() +
-                "s") // Dynamically get the collection
+            .collection(
+                "${_selectedUserType.toLowerCase()}s") // Dynamically get the collection
             .doc(userCredential.user!.uid)
             .get();
 
@@ -279,7 +279,7 @@ class _PrivateLoginScreenState extends State<PrivateLoginScreen> {
                           height: 50,
                           child: ElevatedButton(
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
+                              backgroundColor: WidgetStateProperty.all<Color>(
                                 const Color(0xFFA1CA73),
                               ),
                             ),

@@ -19,7 +19,7 @@ class AttendanceQRScanner extends StatelessWidget {
           );
         },
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(
+          backgroundColor: WidgetStateProperty.all<Color>(
             const Color(0xFFA1CA73),
           ),
         ),

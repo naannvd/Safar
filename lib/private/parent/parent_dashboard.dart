@@ -70,7 +70,7 @@ class _ParentDashboardState extends State<ParentDashboard> {
               },
             ),
             const SizedBox(height: 20),
-            Container(
+            SizedBox(
               height: 320,
               child: const DailyTrip(),
             ),
@@ -86,7 +86,7 @@ class _ParentDashboardState extends State<ParentDashboard> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               height: 320,
               child: ChildList(parentId: parentId),
             ),

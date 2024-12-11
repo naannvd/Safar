@@ -51,7 +51,7 @@ class _AddChildDashboardState extends State<AddChildDashboard> {
             email: parentEmail,
             password: parentPassword,
           );
-        } on FirebaseAuthException catch (e) {
+        } on FirebaseAuthException {
           // If parent re-authentication fails, delete the created child account
           await FirebaseAuth.instance.currentUser?.delete();
           throw Exception(

@@ -17,7 +17,7 @@ class ChildDashboard extends StatelessWidget {
           .get();
       final fullName = userData['child_name'];
       return fullName;
-    } on Exception catch (e) {
+    } on Exception {
       // TODO
     }
     return 'User not found';

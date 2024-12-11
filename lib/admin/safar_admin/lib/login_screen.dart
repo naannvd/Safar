@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:safar_admin/dashboard/main_screen.dart';
+import 'package:safar_admin/public_admin/dashboard/main_screen.dart';
+import 'package:safar_admin/private_admin/dashboard/main_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -33,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const AdminDashboard(),
+            builder: (context) => const PrivateDashboard(),
           ),
         );
       } else {

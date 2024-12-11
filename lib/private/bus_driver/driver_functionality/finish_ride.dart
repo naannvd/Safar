@@ -62,7 +62,7 @@ class FinishRideButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () => _finishRide(context),
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(
+          backgroundColor: WidgetStateProperty.all<Color>(
             const Color(0xFFA1CA73), // Matches the Scan QR Code button color
           ),
         ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:safar/Payment/services/stripe_service.dart';
-import 'package:safar/Tickets/ticket.dart';
 
 class PaymentScreen extends StatelessWidget {
   final VoidCallback onPaymentSuccess;

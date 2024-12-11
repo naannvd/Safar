@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:safar_admin/Widgets/feedbacks.dart';
-import 'package:safar_admin/Widgets/nlpanalysis.dart';
+import 'package:safar_admin/public_admin/Widgets/nlpanalysis.dart';
 // import 'package:safar_admin/Widgets/nlpanalysis.dart';
 
 class MainContent extends StatelessWidget {

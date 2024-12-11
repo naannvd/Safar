@@ -18,8 +18,8 @@ class FullMapScreen extends StatefulWidget {
 class _FullMapScreenState extends State<FullMapScreen> {
   LocationData? _currentLocation;
   GoogleMapController? _mapController;
-  Set<Marker> _markers = {};
-  Set<Polyline> _polylines = {};
+  final Set<Marker> _markers = {};
+  final Set<Polyline> _polylines = {};
   final String _googleApiKey = "AIzaSyD4KSX8nkp7JTb7WqOFk_HU1Cn-lXH9lrg";
 
   @override
@@ -81,7 +81,7 @@ class _FullMapScreenState extends State<FullMapScreen> {
                 Marker(
                   markerId: MarkerId(parentId),
                   position: location,
-                  infoWindow: InfoWindow(title: 'Parent Location'),
+                  infoWindow: const InfoWindow(title: 'Parent Location'),
                 ),
               );
             }

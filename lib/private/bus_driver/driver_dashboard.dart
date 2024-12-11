@@ -11,7 +11,6 @@ class DriverDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Driver Dashboard'),
         backgroundColor: const Color(0xFF042F42),
         actions: [
           IconButton(
